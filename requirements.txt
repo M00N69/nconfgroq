@@ -1,4 +1,4 @@
 # Filename: requirements.txt
 
+transformers
 streamlit
-google-generativeai
