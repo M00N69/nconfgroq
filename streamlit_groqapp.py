@@ -1,9 +1,9 @@
 import streamlit as st
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-# Load the Groq model and tokenizer
-model = AutoModelForSeq2SeqLM.from_pretrained("groq-llama-70b")
-tokenizer = AutoTokenizer.from_pretrained("groq-llama-70b")
+# Load the T5 model and tokenizer
+model = AutoModelForSeq2SeqLM.from_pretrained("t5-small")
+tokenizer = AutoTokenizer.from_pretrained("t5-small")
 
 # Define a function to generate text using the model
 def generate_text(input_text):
