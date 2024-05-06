@@ -8,7 +8,7 @@ client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 def generate_response(user_input):
     # Define the system instruction for processing the user's input
     system_instruction = """
-    Reformuler la non conformité en français et en  anglais:  se référer aux documents IFSv8 fournis en priorité. La reformulation doit être effectuée en français et en anglais pour chaque non-conformité.
+    Reformuler la non conformité en langue française et en langue anglaise:  se référer aux documents IFSv8 fournis en priorité. La reformulation doit être effectuée en français puis en anglais pour chaque non-conformité.
 Assurez-vous que la reformulation soit factuelle, détaillée et justifie le choix de la notation. Pour ce faire, mentionnez la référence de la procédure, la zone ou l'équipement concerné, et précisez le risque produit tout en restant dans le contexte de l'exigence.
 Évitez de formuler la reformulation sous forme de conseils ou de suggestions. Elle doit simplement décrire la non-conformité constatée.
 La reformulation doit idéalement inclure les quatre aspects suivants :
