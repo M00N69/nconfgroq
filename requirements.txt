@@ -1,4 +1,5 @@
 # Filename: requirements.txt
 
-transformers
 streamlit
+transformers
+torch
