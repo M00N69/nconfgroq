@@ -13,9 +13,7 @@ def configure_model(document_text):
 @st.cache(allow_output_mutation=True, ttl=86400)
 def load_documents():
     file_ids = [
-        "1NIMYhm5i_J5T_yBnNtKRiLLqj7lwfhB8",
-        "1Qo6uMueCO_9boMu13RSlF_J8L4MhIhWW",
-        "1n2i979l-VfW0oxO3wIYTy3Yu2fdvYqC9"
+        "1Qo6uMueCO_9boMu13RSlF_J8L4MhIhWW"
     ]
     documents_text = []
     for file_id in file_ids:
