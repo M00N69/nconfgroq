@@ -12,12 +12,13 @@ def configure_model(document_text):
 
 @st.cache(allow_output_mutation=True, ttl=86400)
 def load_documents():
-    # Use a local file instead of Google Drive
+    url = "https://raw.githubusercontent.com/M00N69/nconfgroq/main/guideIFSV8.txt"
     try:
-        with open("guideIFSv8.txt", "r", encoding="utf-8") as file:
-            documents_text = file.read()
-    except IOError as e:
-        st.error(f"Failed to load the document: {str(e)}")
+        response = requests.get(url)
+        response.raise_for_status()  # Ensure we notice bad responses
+        documents_text = response.text
+    except requests.exceptions.HTTPError as e:
+        st.error(f"Failed to download the document: {str(e)}")
         return None
     return documents_text
 
@@ -45,6 +46,9 @@ def main():
                 st.write(response)
     else:
         st.error("Error loading documents. Unable to proceed without document data.")
+
+if __name__ == "__main__":
+    main()
 
 if __name__ == "__main__":
     main()
