@@ -28,7 +28,7 @@ def login(username, password):
         user_dict = st.secrets["users"]
         if username in user_dict and bcrypt.checkpw(password.encode('utf-8'), user_dict[username].encode('utf-8')):
             st.session_state.logged_in = True
-            st.success("Logged in successfully!")
+            st.success("Accès accordé! Allez dans le menu ")
         else:
             st.error("Incorrect username or password")
     except KeyError:
