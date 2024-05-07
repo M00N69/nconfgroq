@@ -1,39 +1,40 @@
 import streamlit as st
-from groq import Groq  # Import the Groq API client
+from groq import Groq
 
 # Setting page configuration
 st.set_page_config(
-    page_title="VisiPilot App",  # Your app title
-    page_icon="🚀",  # Emoji or path to an image file
-    layout="wide",  # "wide" or "centered"
-    initial_sidebar_state="expanded",  # "expanded" or "collapsed"
+    page_title="VisiPilot App",
+    page_icon="🚀",
+    layout="wide",
+    initial_sidebar_state="expanded",
     menu_items={
-        'Get Help': None,  # Optionally set to a URL for getting help
-        'Report a bug': None,  # Optionally set to a URL to report bugs
-        'About': "This is a sample Streamlit app using Groq API."  # Information about the app or developer
+        'Get Help': None,
+        'Report a bug': None,
+        'About': "This is a sample Streamlit app using Groq API."
     }
 )
 
-# Initialize the Groq API client using an API key from Streamlit's secrets
-client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+# Access the GROQ API key from secrets
+api_key = st.secrets["api_keys"]["groq"]
+
+# Initialize the Groq API client
+client = Groq(api_key=api_key)
 
 # Initialize Session State for Login Status
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
-# Simple Login Function with added debugging
+# Simple Login Function (Plaintext Passwords - INSECURE)
 def login(username, password):
     try:
-        # Accessing user credentials from secrets
         user_dict = st.secrets["users"]
-        # Validate credentials
         if username in user_dict and user_dict[username] == password:
             st.session_state.logged_in = True
             st.success("Logged in successfully!")
         else:
             st.error("Incorrect username or password")
     except KeyError:
-        st.error("User credentials are not set up properly in the secrets configuration.")
+        st.error("User credentials not set up properly in the secrets configuration.")
 
 # Login Page
 def login_page():
