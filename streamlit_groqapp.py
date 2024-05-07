@@ -1,17 +1,16 @@
 import streamlit as st
 from groq import Groq  # Import the Groq API client
 
-# Setting page configuration to hide the hamburger menu
+# Setting page configuration
 st.set_page_config(
-    page_title="VisiPilot App",  # Add your app title here
-    page_icon="🚀",  # You can use an emoji or a path to an image file
+    page_title="VisiPilot App",  # Your app title
+    page_icon="🚀",  # Emoji or path to an image file
     layout="wide",  # "wide" or "centered"
     initial_sidebar_state="expanded",  # "expanded" or "collapsed"
     menu_items={
-        'Get Help': None,  # Optional: Add a URL to a help page
-        'Report a bug': None,  # Optional: Add a URL to report bugs
-        'About': "This is a sample Streamlit app using Groq API.",  # Optional: Information about the app or the developer
-        'show_menu': False  # Hiding the hamburger menu
+        'Get Help': None,  # Optionally set to a URL for getting help
+        'Report a bug': None,  # Optionally set to a URL to report bugs
+        'About': "This is a sample Streamlit app using Groq API."  # Information about the app or developer
     }
 )
 
