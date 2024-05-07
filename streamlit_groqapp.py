@@ -54,7 +54,7 @@ def page_reformulation():
             response = generate_response(user_input)
             st.write(response)
 
-def another_page():
+def Page_Autre_projet():
     st.title("Page Autre projet")
     st.write("Contenu à venir")
 
