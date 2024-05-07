@@ -33,6 +33,10 @@ English version : The IFSv8 standard requires that cleaning procedures be docume
 
 # Define a function for the Non-Conformities page
 def page_reformulation():
+    # Displaying an image without a caption
+    image_path = 'https://raw.githubusercontent.com/M00N69/Gemini-Knowledge/main/visipilot%20banner.PNG'  # Ensure the path to your image file is correct
+    st.image(image_path, use_column_width=True)
+    
     st.title("Reformulation des Non-Conformités")
     user_input = st.text_area("Posez votre question ici:", height=200)
     if st.button("Envoyer"):
