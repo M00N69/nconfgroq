@@ -1,17 +1,17 @@
 import streamlit as st
 import bcrypt
-from groq import Groq  # Import the Groq API client
+from groq import Groq  # Import the Groq API client assuming this is a valid import
 
 # Setting page configuration
 st.set_page_config(
-    page_title="VisiPilot App",  # Your app title
-    page_icon="🚀",  # Emoji or path to an image file
-    layout="wide",  # "wide" or "centered"
-    initial_sidebar_state="expanded",  # "expanded" or "collapsed"
+    page_title="VisiPilot App",
+    page_icon="🚀",
+    layout="wide",
+    initial_sidebar_state="expanded",
     menu_items={
-        'Get Help': None,  # Optionally set to a URL for getting help
-        'Report a bug': None,  # Optionally set to a URL to report bugs
-        'About': "This is a sample Streamlit app using Groq API."  # Information about the app or developer
+        'Get Help': None,
+        'Report a bug': None,
+        'About': "This is a sample Streamlit app using Groq API."
     }
 )
 
@@ -20,44 +20,42 @@ client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 # Initialize Session State for Login Status
 if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
+    st.session_state['logged_in'] = False
 
 # Simple Login Function with secure password handling
 def login(username, password):
-    user_dict = st.secrets["users"]
-    if username in user_dict and bcrypt.checkpw(password.encode('utf-8'), user_dict[username].encode('utf-8')):
-        st.session_state.logged_in = True
-        st.success("Logged in successfully!")
-    else:
-        st.error("Incorrect username or password")
-
-# Login Page
-def login(username, password):
     try:
-        # Attempt to retrieve user dictionary from Streamlit secrets
         user_dict = st.secrets["users"]
-        # Check if the username exists and the password matches the bcrypt hash
         if username in user_dict and bcrypt.checkpw(password.encode('utf-8'), user_dict[username].encode('utf-8')):
             st.session_state.logged_in = True
             st.success("Logged in successfully!")
         else:
             st.error("Incorrect username or password")
     except KeyError:
-        # This will catch the case where the 'users' key is missing or any other KeyError within the 'try' block
         st.error("User credentials are not set up properly in secrets.")
     except Exception as e:
-        # Generic exception to catch unexpected errors (e.g., decoding issues)
         st.error(f"An error occurred: {str(e)}")
+
+# Login Page
+def login_page():
+    st.title("Login to VisiPilot App")
+    with st.form("login_form"):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submitted = st.form_submit_button("Login")
+        if submitted:
+            login(username, password)
 
 # Define a function for generating responses using the detailed instruction
 def generate_response(user_input):
+    # Detailed instructions for generating responses
     system_instruction = """
     reformuler chaque non-conformité en langue française puis en langue anglaise, en utilisant les instructions suivantes :
     Référez-vous aux documents de la norme IFSv8 en priorité.
     Assurez-vous que la reformulation soit factuelle, détaillée et justifie le choix de la notation. Pour ce faire, mentionnez la référence de la procédure, la zone ou l'équipement concerné, et précisez le risque produit tout en restant dans le contexte de l'exigence.
     Évitez de formuler la reformulation sous forme de conseils ou de suggestions. Elle doit simplement décrire la non-conformité constatée.
     La reformulation doit idéalement inclure les quatre aspects suivants :
-    L'exigence : par exemple, "La norme exige que..." ou "L'exigence interne est de..."
+    L'exigence : par exemple, 'La norme exige que...' ou 'L'exigence interne est de...'
     La description de la défaillance : précisez les responsabilités, la méthode ou les informations documentées qui n'ont pas été prévues ou mises en œuvre, ou qui ne sont pas suffisamment efficaces pour atteindre le résultat prévu.
     La preuve de la défaillance : fournissez des éléments concrets qui prouvent la non-conformité.
     La conséquence/l'impact de cette défaillance dans le contexte de l'exigence : concluez en expliquant pourquoi le risque est limité.
@@ -84,11 +82,7 @@ def page_reformulation():
             response = generate_response(user_input)
             st.write(response)
 
-# Define other pages and sidebar logic as previously described
-def another_page():
-    st.title("Other Project Page")
-    st.write("Content to come.")
-
+# Main application logic and sidebar navigation
 def main_app():
     st.sidebar.title('Navigation')
     option = st.sidebar.selectbox(
@@ -100,7 +94,11 @@ def main_app():
     elif option == 'Other Project':
         another_page()
 
-# App Routing based on login status
+def another_page():
+    st.title("Other Project Page")
+    st.write("Content to come.")
+
+# App routing based on login status
 if not st.session_state.logged_in:
     login_page()
 else:
@@ -109,3 +107,4 @@ else:
 # Optionally, add a button to restart the app
 if st.sidebar.button("Restart App"):
     st.experimental_rerun()
+
