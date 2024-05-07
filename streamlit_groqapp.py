@@ -55,14 +55,14 @@ def page_reformulation():
             st.write(response)
 
 def another_page():
-    st.title("Another Page")
-    st.write("Content for another page")
+    st.title("Page Autre projet")
+    st.write("Contenu à venir")
 
 # Set up sidebar navigation
 st.sidebar.title('Navigation')
 option = st.sidebar.selectbox(
-    'Choose a page:',
-    ('Reformulation des Non-Conformités', 'Another Page')
+    'Choix de page:',
+    ('Reformulation des Non-Conformités', ' Page Autre projet')
 )
 
 if option == 'Reformulation des Non-Conformités':
