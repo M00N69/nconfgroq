@@ -32,14 +32,22 @@ def login(username, password):
         st.error("Incorrect username or password")
 
 # Login Page
-def login_page():
-    st.title("Login to VisiPilot App")
-    with st.form("login_form"):
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        submitted = st.form_submit_button("Login")
-        if submitted:
-            login(username, password)
+def login(username, password):
+    try:
+        # Attempt to retrieve user dictionary from Streamlit secrets
+        user_dict = st.secrets["users"]
+        # Check if the username exists and the password matches the bcrypt hash
+        if username in user_dict and bcrypt.checkpw(password.encode('utf-8'), user_dict[username].encode('utf-8')):
+            st.session_state.logged_in = True
+            st.success("Logged in successfully!")
+        else:
+            st.error("Incorrect username or password")
+    except KeyError:
+        # This will catch the case where the 'users' key is missing or any other KeyError within the 'try' block
+        st.error("User credentials are not set up properly in secrets.")
+    except Exception as e:
+        # Generic exception to catch unexpected errors (e.g., decoding issues)
+        st.error(f"An error occurred: {str(e)}")
 
 # Define a function for generating responses using the detailed instruction
 def generate_response(user_input):
