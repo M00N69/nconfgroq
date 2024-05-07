@@ -34,7 +34,7 @@ def generate_response(user_input, system_instruction):
     return chat_completion.choices[0].message.content
 
 def main():
-    st.title("Question sur IFSv8")
+    st.title("Question sur IFSv8...En cours de codage , merci pour votre patience")
     document_text = load_documents()
     if document_text is not None:
         configure_model(document_text)
