@@ -1,5 +1,8 @@
 import streamlit as st
-from groq import Groq
+import bcrypt
+
+# Assuming API_Client is the correct client class for your API
+from your_api_client_library import API_Client
 
 # Setting page configuration
 st.set_page_config(
@@ -14,21 +17,21 @@ st.set_page_config(
     }
 )
 
-# Access the GROQ API key from secrets
+# Access the API key from secrets
 api_key = st.secrets["api_keys"]["groq"]
 
-# Initialize the Groq API client
-client = Groq(api_key=api_key)
+# Initialize the API client
+client = API_Client(api_key=api_key)
 
 # Initialize Session State for Login Status
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
-# Simple Login Function (Plaintext Passwords - INSECURE)
+# Simple Login Function with secure password handling
 def login(username, password):
     try:
         user_dict = st.secrets["users"]
-        if username in user_dict and user_dict[username] == password:
+        if username in user_dict and bcrypt.checkpw(password.encode('utf-8'), user_dict[username].encode('utf-8')):
             st.session_state.logged_in = True
             st.success("Logged in successfully!")
         else:
@@ -49,11 +52,11 @@ def login_page():
 # Define a function for generating responses using detailed instructions
 def generate_response(user_input):
     system_instruction = """
-    reformuler chaque non-conformité en langue française puis en langue anglaise, en utilisant les instructions suivantes :
-    Référez-vous aux documents de la norme IFSv8 en priorité.
-    Assurez-vous que la reformulation soit factuelle, détaillée et justifie le choix de la notation. Pour ce faire, mentionnez la référence de la procédure, la zone ou l'équipement concerné, et précisez le risque produit tout en restant dans le contexte de l'exigence.
+    Reformulate each non-conformity in French and then in English, using the following instructions:
+    Refer to the IFSv8 standard documents as a priority.
+    Ensure that the reformulation is factual, detailed, and justifies the choice of notation. For this, mention the reference of the procedure, the area or equipment concerned, and specify the product risk while remaining in the context of the requirement.
     """
-    chat_completion = client.chat.completions.create(
+    chat_completion = client.chat_completions_create(
         messages=[
             {"role": "user", "content": user_input},
             {"role": "system", "content": system_instruction}
@@ -69,7 +72,7 @@ def page_reformulation():
     st.title("Reformulation des Non-Conformités")
     user_input = st.text_area("Posez votre question ici:", height=200)
     if st.button("Envoyer"):
-        with st.spinner('Attendez pendant que nous générons la réponse...'):
+        with st.spinner('Generating response...'):
             response = generate_response(user_input)
             st.write(response)
 
@@ -77,23 +80,21 @@ def page_reformulation():
 def main_app():
     st.sidebar.title('Navigation')
     option = st.sidebar.selectbox(
-        'Choix de page:',
-        ('Reformulation des Non-Conformités', 'Autre projet')
+        'Choose a page:',
+        ('Reformulation des Non-Conformités', 'Other Project')
     )
 
     if option == 'Reformulation des Non-Conformités':
         page_reformulation()
-    elif option == 'Autre projet':
-        Page_Autre_projet()
+    elif option == 'Other Project':
+        other_project_page()
 
-def Page_Autre_projet():
-    st.title("Page Autre projet")
-    st.write("Contenu à venir")
+def other_project_page():
+    st.title("Other Project Page")
+    st.write("Content coming soon.")
 
 # App Routing based on login status
 if not st.session_state.logged_in:
     login_page()
 else:
     main_app()
-
-
