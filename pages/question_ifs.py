@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from groq import Groq  # Assuming this is the correct import based on your Groq setup
+from groq import Groq
 
 # Initialize the Groq API client using an API key from Streamlit's secrets
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
@@ -12,15 +12,12 @@ def configure_model(document_text):
 
 @st.cache(allow_output_mutation=True, ttl=86400)
 def load_documents():
-    url = "https://raw.githubusercontent.com/M00N69/nconfgroq/main/guideIFSV8.txt"
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Ensure we notice bad responses
-        documents_text = response.text
-    except requests.exceptions.HTTPError as e:
-        st.error(f"Failed to download the document: {str(e)}")
-        return None
-    return documents_text
+    links = [
+        "https://docs.google.com/document/d/1LCrKVO8n4dj2Mi47nt45BkMOR7_1bmquVDP5RxWMpSE/edit?usp=sharing",
+        "https://drive.google.com/file/d/1NIMYhm5i_J5T_yBnNtKRiLLqj7lwfhB8/view?usp=sharing",
+        "https://docs.google.com/document/d/1-IZ4hdDohYMRUV7B0HlZafSpfNzdBPm9JquMGW5Abfw/edit?usp=sharing"
+    ]
+    return links
 
 def generate_response(user_input, system_instruction):
     # Generating chat response using Groq API with detailed instruction
@@ -35,19 +32,13 @@ def generate_response(user_input, system_instruction):
 
 def main():
     st.title("Question sur IFSv8...En cours de codage , merci pour votre patience")
-    document_text = load_documents()
-    if document_text is not None:
-        configure_model(document_text)
-
-        user_input = st.text_area("Posez votre question ici:", height=300)
-        if st.button("Envoyer"):
-            with st.spinner('Attendez pendant que nous générons la réponse...'):
-                response = generate_response(user_input, document_text)
-                st.write(response)
+    links = load_documents()
+    if links is not None:
+        st.markdown("Here are some reliable sources of information about FSV8:")
+        for link in links:
+            st.markdown(f"* {link}")
     else:
         st.error("Error loading documents. Unable to proceed without document data.")
 
 if __name__ == "__main__":
     main()
-
-
