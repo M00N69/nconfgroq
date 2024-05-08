@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from groq import Groq  # Assumant que cette importation est valide
+from groq import Groq
 
 def get_groq_client():
     # Initialisation sécurisée du client Groq avec une clé API
@@ -24,19 +24,24 @@ def load_documents():
     return documents
 
 def generate_response(user_input, documents):
-    # Combine user input with the loaded documents for processing
-    combined_text = "\n".join(documents) + "\nUser Question: " + user_input
-    system_instruction = """
-    La réponse doit être en français sauf demande contraire. Fournir des réponses détaillées.
-    Utiliser les documents fournis mais ne pas exposer de liens directs ou de références.
-    """
+    # Charger les documents
+    documents_text = "\n".join(documents)
+
+    # Créer un client Groq
     client = get_groq_client()
-    # Assuming 'send_request' is the correct method; replace with the actual method name
-    response = client.send_request({
-        'text': combined_text,
-        'instructions': system_instruction
-    })
-    return response
+
+    # Configurer les paramètres de la requête
+    params = {
+        "text": user_input,
+        "documents": documents_text,
+        "instructions": "La réponse doit être en français sauf demande contraire. Fournir des réponses détaillées. Utiliser les documents fournis mais ne pas exposer de liens directs ou de références."
+    }
+
+    # Envoyer la requête à Groq
+    response = client.send_request(params)
+
+    # Afficher la réponse
+    st.write(response)
 
 def main():
     st.title("Question sur les normes IFS V8")
