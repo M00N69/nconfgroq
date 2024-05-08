@@ -42,7 +42,7 @@ def generate_response(user_input, documents):
     return chat_completion.choices[0].message.content
 
 def main():
-    st.title("Question sur les normes IFS V8")
+    st.title("Question sur les normes IFS V8...En cours de codage, merci pour votre patience")
     documents = load_documents()
     if documents:
         user_input = st.text_area("Posez votre question ici:", height=300)
