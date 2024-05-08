@@ -13,7 +13,8 @@ def load_documents():
     links = [
         "https://docs.google.com/document/d/e/2PACX-1vSJUHS9LlgUzTb8mZf4eND5AZS9zZN8xCAoC-AM08JOvY6RrZeXpIuVzevxm3SXhvpuFLWLp0hJRC28/pub",
         "https://docs.google.com/document/d/e/2PACX-1vQ6aWiYGVW3j0njBm1wCb2MaEazsTYljLbABwXuhRwwwTa9AHUmvKiwwt7YQxQOihwi5ZkPu2gZMb85/pub",
-        "https://docs.google.com/document/d/e/2PACX-1vQ7-byHFi82kkFWqZuWgkhcYu5UVNfcWuVxWuVjKbW94J3t-vQaZkt5cNzsOSZJxOUxCoMJ7CJgIb-X/pub"
+        "https://docs.google.com/document/d/e/2PACX-1vQ7-byHFi82kkFWqZuWgkhcYu5UVNfcWuVxWuVjKbW94J3t-vQaZkt5cNzsOSZJxOUxCoMJ7CJgIb-X/pub",
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLsFxmYt3avAvxM3vizwWoX_5m9i4jEJdV0VWlNMO_27RLdcKwKDaIhjKzN7yAJ4MkgdTDzvE-lkm8/pubhtml"
     ]
     return links
 
