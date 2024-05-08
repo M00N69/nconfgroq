@@ -24,12 +24,16 @@ def load_documents():
     return documents
 
 def generate_response(user_input, documents):
-    # Utilisation du client API avec les documents chargés pour générer une réponse
+    # Combine user input with the loaded documents for processing
+    combined_text = "\n".join(documents) + "\nUser Question: " + user_input
+    system_instruction = """
+    La réponse doit être en français sauf demande contraire. Fournir des réponses détaillées.
+    Utiliser les documents fournis mais ne pas exposer de liens directs ou de références.
+    Viser à fournir des références aux exigences IFS V8 où applicable, vérifier soigneusement que les numéro de clauses correspondent bien dans le standard IFSv8.
+    """
     client = get_groq_client()
-    combined_text = " ".join(documents)  # Combinaison des textes pour analyse
-    system_instruction = f"Analyser et répondre basée sur le contexte des normes IFS et la question: {user_input}"
-    # Supposons que le client Groq ait une méthode pour traiter les entrées
-    response = client.process_input(combined_text, system_instruction)  # Méthode hypothétique
+    # Assuming 'process_input' is a valid method for your Groq client; adjust as necessary
+    response = client.process_input(combined_text, system_instruction)
     return response
 
 def main():
