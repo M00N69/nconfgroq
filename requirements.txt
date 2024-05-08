@@ -3,3 +3,4 @@
 streamlit
 groq  # Replace with the correct package name if different
 bcrypt
+beautifulsoup4
