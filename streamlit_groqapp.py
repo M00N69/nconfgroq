@@ -55,7 +55,7 @@ def generate_response(user_input):
     Assurez-vous que la reformulation soit factuelle, détaillée et justifie le choix de la notation. Pour ce faire, mentionnez la référence de la procédure, la zone ou l'équipement concerné, et précisez le risque produit tout en restant dans le contexte de l'exigence.
     Évitez de formuler la reformulation sous forme de conseils ou de suggestions. Elle doit simplement décrire la non-conformité constatée.
     La reformulation doit idéalement inclure les quatre aspects suivants :
-    L'exigence : par exemple, 'La norme exige que...' ou 'L'exigence interne est de...'
+    L’exigence exemple: "La norme exige que ….." dasn ce cas bien s'assurer que la référence à l'exigenc de la norme est la bonne ens e référant aux documents de la normes IFSv8  ou exigence interne "Pour cela l’entreprise a prévu de ….". Il faut également ajouté des élément confirmons que dans l'ensemble l'exigence est remplie exemple : Les déchets sont correctement  gérés au niveau du site  ou Les sols sont conçus et adaptés aux process... 
     La description de la défaillance : précisez les responsabilités, la méthode ou les informations documentées qui n'ont pas été prévues ou mises en œuvre, ou qui ne sont pas suffisamment efficaces pour atteindre le résultat prévu.
     La preuve de la défaillance : fournissez des éléments concrets qui prouvent la non-conformité.
     La conséquence/l'impact de cette défaillance dans le contexte de l'exigence : concluez en expliquant pourquoi le risque est limité.
