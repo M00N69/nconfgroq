@@ -42,5 +42,14 @@ def main():
     else:
         st.error("Error loading documents. Unable to proceed without document data.")
 
+    # Add your detailed instructions here
+    st.markdown("Instructions:")
+    st.markdown("1. Please ask your question clearly and concisely.")
+    st.markdown("2. Make sure to provide enough context for the model to understand your question.")
+    st.markdown("3. The model will do its best to provide an accurate response based on the information provided.")
+    st.markdown("4. The response will be in the same language as the user's question.")
+    st.markdown("5. The model will prioritize using the documents provided in the links for any answer.")
+    st.markdown("6. The model will provide the IFS V8 requirement reference when possible.")
+
 if __name__ == "__main__":
     main()
