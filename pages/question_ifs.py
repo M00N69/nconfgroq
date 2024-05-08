@@ -12,7 +12,7 @@ def load_documents():
     # Define the links to the documents
     links = [
         "https://docs.google.com/document/d/e/2PACX-1vSJUHS9LlgUzTb8mZf4eND5AZS9zZN8xCAoC-AM08JOvY6RrZeXpIuVzevxm3SXhvpuFLWLp0hJRC28/pub",
-        "https://docs.google.com/document/d/e/2PACX-1vQ79Mh2s7Fn1e8PDWzcEmZe9BlrsB97M_WZt-wy9zT4-mHrhNCvVdHYnZj1gC-sK6Kdqc2-YuSyEDb3/pub",
+        "https://docs.google.com/document/d/e/2PACX-1vQ6aWiYGVW3j0njBm1wCb2MaEazsTYljLbABwXuhRwwwTa9AHUmvKiwwt7YQxQOihwi5ZkPu2gZMb85/pub",
         "https://docs.google.com/document/d/e/2PACX-1vQ7-byHFi82kkFWqZuWgkhcYu5UVNfcWuVxWuVjKbW94J3t-vQaZkt5cNzsOSZJxOUxCoMJ7CJgIb-X/pub"
     ]
     return links
