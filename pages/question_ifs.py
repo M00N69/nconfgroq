@@ -31,17 +31,15 @@ def generate_response(user_input, documents):
     client = get_groq_client()
 
     # Configurer les paramètres de la requête
-    params = {
-        "text": user_input,
-        "documents": documents_text,
-        "instructions": "La réponse doit être en français sauf demande contraire. Fournir des réponses détaillées. Utiliser les documents fournis mais ne pas exposer de liens directs ou de références."
-    }
-
-    # Envoyer la requête à Groq
-    response = client.send_request(params)
-
-    # Afficher la réponse
-    st.write(response)
+    system_instruction = "La réponse doit être en français sauf demande contraire. Fournir des réponses détaillées. Utiliser les documents fournis mais ne pas exposer de liens directs ou de références."
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {"role": "user", "content": user_input},
+            {"role": "system", "content": system_instruction}
+        ],
+        model="mixtral-8x7b-32768"
+    )
+    return chat_completion.choices[0].message.content
 
 def main():
     st.title("Question sur les normes IFS V8")
