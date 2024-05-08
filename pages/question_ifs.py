@@ -11,7 +11,8 @@ def load_documents():
     urls = [
         "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFS_Food_v8_audit_checklist_guideline_v1_EN_1706090430.txt",
         "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFS_Food_v8_doctrine_v1_EN_1687965517%20(2).txt",
-        "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFS_Food_v8_standard_FR_1681804144%20(2).txt"
+        "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFS_Food_v8_standard_FR_1681804144%20(2).txt",
+        "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFSV8.txt"
     ]
     documents = []
     for url in urls:
@@ -31,7 +32,7 @@ def generate_response(user_input, documents):
     client = get_groq_client()
 
     # Configurer les paramètres de la requête
-    system_instruction = "La réponse doit être en français sauf demande contraire. Fournir des réponses détaillées. Utiliser les documents fournis mais ne pas exposer de liens directs ou de références."
+    system_instruction = "La réponse doit être en français sauf demande contraire. Fournir des réponses détaillées. En cas de références aux clauses de la norme utiliser uniquement le fichier IFSV8.txt. Utiliser les documents fournis mais ne pas exposer de liens directs ou de références."
     chat_completion = client.chat.completions.create(
         messages=[
             {"role": "user", "content": user_input},
