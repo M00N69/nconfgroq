@@ -20,7 +20,7 @@ def load_documents():
             documents.append(response.text)
         else:
             st.error(f"Failed to load document from: {url}")
-            return None  # Return None to indicate failure
+            return None
     return documents
 
 def generate_response(user_input, documents):
@@ -29,11 +29,13 @@ def generate_response(user_input, documents):
     system_instruction = """
     La réponse doit être en français sauf demande contraire. Fournir des réponses détaillées.
     Utiliser les documents fournis mais ne pas exposer de liens directs ou de références.
-    Viser à fournir des références aux exigences IFS V8 où applicable, vérifier soigneusement que les numéro de clauses correspondent bien dans le standard IFSv8.
     """
     client = get_groq_client()
-    # Assuming 'process_input' is a valid method for your Groq client; adjust as necessary
-    response = client.process_input(combined_text, system_instruction)
+    # Assuming 'send_request' is the correct method; replace with the actual method name
+    response = client.send_request({
+        'text': combined_text,
+        'instructions': system_instruction
+    })
     return response
 
 def main():
