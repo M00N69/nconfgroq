@@ -34,9 +34,11 @@ def main():
     st.title("Question sur IFSv8...En cours de codage , merci pour votre patience")
     links = load_documents()
     if links is not None:
-        st.markdown("Here are some reliable sources of information about FSV8:")
-        for link in links:
-            st.markdown(f"* {link}")
+        user_input = st.text_area("Posez votre question ici:", height=300)
+        if st.button("Envoyer"):
+            with st.spinner('Attendez pendant que nous générons la réponse...'):
+                response = generate_response(user_input, " ".join(links))
+                st.write(response)
     else:
         st.error("Error loading documents. Unable to proceed without document data.")
 
