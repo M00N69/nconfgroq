@@ -47,9 +47,9 @@ def calculate_score(link_info, response):
 def generate_response(user_input):
     # Combines user input with predefined system instructions
     system_instruction = """
-    the response should be in the same language than the user question. Response  should be with more details possible   
+    The response shall be in the same language than the user question. Response should be with more details possible   
     The response will use the provided documents but will not expose direct links or references.
-    The model will aim to provide IFS V8 requirement references where applicable.suggest any other question around same subject
+    The model will aim to provide IFS V8 requirement references where applicable.Suggest any other question around same subject
     """
     client = get_groq_client()
     chat_completion = client.chat.completions.create(
