@@ -1,0 +1,373 @@
+﻿Food 
+IFS Food Version 8 Doctrine v1
+ENGLISH 
+Food 
+Foreword 
+This document provides additional clarification to the IFS Food Standard. The doctrine is avail able to certification bodies, certified companies and all other IFS users. 
+The following doctrine is a collection of several descriptive documents. Each document has its  own name and the first three signs indicate the type of document. In the example below, the  first two (2) letters stand for “Doctrine Food”, and the number 8 for the “Standard version 8”.  The second section of the name specifies the part of the Standard to which the document re 
+fers (the IFS Food Standard is divided into different parts which are again subdivided into dif ferent chapters). The third section indicates the chapter of the standard and the number after  the backslash marks the number of the explanation in the doctrine itself. 
+E.g. DF8-1-3.4/1 V1 means the document is the first IFS Food Doctrine explanation which re fers to the chapter 3.4 in the first part of the IFS Food version 8.  
+Standard 
+(e.g. F = Food) 
+Standard  part 
+Serial number of the chapter related  explanation in the Doctrine 
+DF8 - 1-3.4/1 V1 
+Document 
+Standard  version
+Standard  chapter 
+Version of the  Doctrine 
+The document name is followed by the version of the doctrine document to enable the reader  to follow the changes. 
+This new document system enables the user to exchange only the modified pages instead of  the whole document. All changes are described in the content overview on the first pages and  these pages will be updated with each change. If no changes are marked, it means the content  already existed in the same way for IFS Food v7 or in the previous doctrine version. Please note  that the comment “reworked wording” indicates a grammatical correction or improvement of  the language. Any changes in the content are additionally marked. 
+In the digital version of the doctrine, links allow users to search for specific clarifications. Click ing on the explanation of interest will lead to the relevant document. 
+The application of newly introduced or adapted rules is always two (2) months after publica tion of the relevant version, if not specified otherwise. In case of a new IFS Standard version,  the rules apply at the moment the new version is applicable. 
+Certification bodies shall ensure that relevant certification body personnel is trained on the  introduced changes according to their function within the certification body before the rules  come into force. A proof of this training shall be available on request. 
+IFS FOOD VERSION 8 DOCTRINE 
+Food 
+CONTENTS 
+Doctrine  number 
+Title Document name Comments PART 1 – IFS Food Certification Protocol 
+1.2 Before the IFS Food Audit 
+1.2.1 Making a contract with a certification body 
+1.2.1.1 Are there any IFS rules for the use of inter preters during an IFS Food Audit? 
+DF8-1-2.1/1 V1 
+1.2.1.2 Auditor sharing DF8-1-2.1/2 V1 1.2.1.4 Use of a technical expert within an audit team DF8-1-2.1/4 V1 
+1.2.2 Scope of the IFS Food Audit 
+1.2.2.2 Which IFS Food Standard version shall be  applied in some specific situations? 
+1.2.2.3 Is it possible to certify a mobile bottling  company? 
+1.2.2.4 Which audit scope applies for a company  which produces a wide range of pre-packed  
+products with 3 or more than 3 product  
+scopes with High Pressure Processing (HPP)? 
+1.2.2.9 Clarification about how to explain in the  report special situations where same or similar  raw material are bought than the food pro 
+cessed by the audited production site 
+1.2.3 Type of IFS Food Audits 
+1.2.3.4 Extension audit 
+1.2.3.4.3 Processing of sparkling wine: when to perform  the audit? 
+1.2.4 IFS Food Audit options 
+1.2.4.2 Unannounced audit option 
+DF8-1-2.2/2 V1 New 
+DF8-1-2.2/3 V1 
+DF8-1-2.2/4 V1 Updated status DF7-1-2.2/4 V1 
+DF8-1-2.2/9 V1 
+DF8-1-2.3.4/3 V1 
+1.2.4.2.1 Unannounced audit registration DF8-1-2.4.2/1 V1 Updated status  DF7-1-2.4.2/1 V2 
+PART 2 – List of IFS Food audit requirements 
+2.4 Operational processes 
+2.4.19 Allergen risk mitigation 
+2.4.19.3 Requirement clarification DF8-2-4.19/3 V1 2.4.21 Food defence  
+2.4.21.2 Clarification about the (non) applicability of a  part of requirement 4.21.2 
+JUNE 2023 
+DF8-2-4/21.2 V1
+IFS FOOD VERSION 8 DOCTRINE 
+Food 
+CONTENTS 
+Doctrine  number 
+Title Document name Comments 
+PART 3 – Requirements for accreditation  
+bodies, certification bodies and auditors  
+IFS Accreditation and Certification process 
+3.3 Requirements for IFS Food Auditors,  Reviewers, In-house Trainers and  
+Witness Auditors 
+3.3.1 Requirements for IFS Food Auditors 3.3.1.5 Maintenance of auditor’s approval 
+3.3.1.5.1 Clarification on the maintenance of auditor  approval in certain specific situations 
+3.3.2 Requirements for IFS Reviewers 
+3.3.2.1 Clarification about specific types of audits  which are not accepted for a sign-off audit,  
+witness audit and auditor scope extension 
+PART 4 – Reporting, IFS Software and  
+IFS Database 
+4.2 Reporting 
+4.2.1 Minimum requirements for the IFS Audit  Report 
+4.2.1.1 How is the COID managed for companies in  some specific cases? 
+4.2.1.2 Which information of the report shall be  translated in English? 
+4.4 The IFS Database 
+4.4.1 Form for extraordinary information to be filled  out by the certification bodies 
+JUNE 2023 
+DF8-3-3.1.5/1 V1 Updated status DF7-3-3.1.1.5/1 V1 
+DF8-3-3.2/1 V1 
+DF8-4-2.1/1 V1 
+DF8-4-2.1/2 v1 
+DF8-4-4/1 V1 Updated status DF7-4-4/1 V1
+IFS FOOD VERSION 8 DOCTRINE 
+1 
+DF8-1-2.1/1 V1
+CLARIFICATION ON PART 1 – 2.1 MAKING A CONTRACT  WITH A CERTIFICATION BODY 
+PART 1 – IFS Food Certification Protocol 
+1.2 Before the IFS Food Audit 
+1.2.1 Making a contract with a certification body 
+1.2.1.1 Are there any IFS rules for the use of interpreters during an  IFS Food Audit? 
+An IFS Food Audit shall be carried out in the language of the production site. The use  of an interpreter is not allowed if the production site language is: 
+• German 
+• French 
+• English 
+• Chinese 
+• Italian 
+• Spanish (exempted Central and South America) 
+In general, the audit shall preferably be carried out in the language of the production  site. If this is not possible, it is mandatory to use an interpreter under the following  conditions: 
+• The interpreter shall have a technical background or be an approved auditor for  another food safety/quality standard. 
+• The interpreter shall be independent from the audited company to avoid any con flict of interest. 
+• 20% of the total audit duration shall be added to ensure proper audit performance. ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+1 
+DF8-1-2.1/2 V1 
+CLARIFICATION ON PART 1 – 2.1 MAKING A CONTRACT  WITH A CERTIFICATION BODY 
+1.2.1.2 Auditor sharing 
+To cover all the necessary product and technology scopes of an audit, there are two (2)  possibilities to share auditors between certification bodies: 
+1) Borrowing of auditors 
+For the occasional sharing of auditors, both certification bodies shall compose a short  agreement concerning the lending/borrowing of the auditor. The agreement shall  contain, at a minimum: 
+• day of audit 
+• name of company 
+• name of shared auditor 
+• signature of both certification body managers of the IFS contracted certification  bodies 
+• signature of a responsible person to IFS from both IFS contracted organisations. 
+2) IFS Certification Body Working Group 
+If certification bodies wish to share auditors more frequently, a short contract can be  requested from the IFS office in Berlin. This agreement allows two (2) or more certifica tion bodies to work together by sharing one pool of auditors. The responsibilities for  the audit, training of auditors, reviewing etc. are clearly separated. Only audit date and  scope can be seen by the partner; company names are invisible.
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+1 
+DF8-1-2.1/4 V1 
+CLARIFICATION ON PART 1 – 2.1 MAKING A CONTRACT  WITH A CERTIFICATION BODY 
+1.2.1.4 Use of a technical expert within an audit team 
+In exceptional cases, e.g. when a certification body does not have direct access to an  IFS Food Auditor with a qualification in the scope required or cannot sign a short term  contract with another certification body to access their auditors, IFS allows the follow ing exception. Audits may be carried out by a team consisting of: 
+• an approved IFS Food Auditor, and 
+• a technical expert. 
+This exception is valid until further notification in all countries outside of Europe. The  technical expert shall meet the following criteria: 
+• Have a contract with the certification body for which the audit is to be undertaken.  The contract shall include clauses to ensure confidentiality and prevent conflicts of  interest. 
+• Meet the criteria for work experience laid down in the IFS Food Auditor qualification  requirements (product and technology scopes for IFS Food version 8). 
+• Have completed a training course in HACCP or risk assessment, as defined in the IFS  Food Auditor requirements or have demonstrable competence in these areas. 
+• Have received background training on IFS Food from the certification body. 
+The certification body shall also ensure the following requirements are met: 
+• Maintain evidence of the experience and qualifications justifying the person’s status  as a technical expert. This shall be made available on request to the IFS Offices. 
+• The role of the technical expert within the audit team shall be clearly defined and  the qualified IFS Food Auditor shall be considered as the team leader. The technical  expert must be accompanied during the whole audit by the IFS Food Lead Auditor.  The benefit for the IFS Food Auditor is that this audit performed with an expert can  be used as evidence when applying for a scope extension. 
+• The technical expert shall appear on the IFS Food Audit Report in the audit overview.ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+1 
+DF8-1-2.2/2 V1
+CLARIFICATION ON PART 1 – 2.2 SCOPE OF THE IFS FOOD  AUDIT 
+1.2.2 Scope of the IFS Food Audit 
+1.2.2.2 Which IFS Food Standard version shall be applied in some  specific situations? 
+In case the audit starts on or after 1st of October 2023, IFS Food v8 audits are possible. In case the audit starts on or after 1st January 2024, IFS Food v8 is mandatory. 
+In case of unannounced IFS Audits, if the audit window starts on or after 1st October  2023 then the audit shall be performed according to IFS Food v8. 
+In case of multi-location companies, all sites shall be audited to the same version as  that of the head office. 
+Exceptional situations where the IFS Food v7 can still apply are the following: 
+• Audit of multi-location companies with central management where the audit of the  central managing site started before the 1st October 2023. If it is not possible to  perform the central management audit according to v8, all sites shall be audited  according to v7 too, also sites having unannounced audits where one or several  site(s) has/have their audit window starting on or after 1st of October. 
+• Follow-up audit when the “main” audit was performed according to v7. 
+• Extension audit when the “main” audit was performed according to v7. 
+The general admission of the aforementioned exceptional situations which permit the  use of IFS Food v7 after 1st January 2024, shall terminate on 31st December 2024. 
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+1 
+DF8-1-2.2/3 V1 
+CLARIFICATION ON PART 1 – 2.2 SCOPE OF THE IFS FOOD  AUDIT 
+1.2.2.3 Is it possible to certify a mobile bottling company? 
+It is not possible to certify a company providing a service. The wineries which use a  mobile bottling service and want to have it in the certificate scope shall declare this to  the certification body and request to organise the IFS Audit during the bottling step  and audit the mobile service when in operation at the production site. In case the  audit is unannounced, an extension audit shall be conducted to be able to include this  step in the scope. In addition, the bottling service provider shall be covered by the  HACCP of the company. 
+A clear description and the name of the bottling company shall be provided in the  company profile. 
+The type of product being bottled at the time of operation shall be written on the  scope of the certificate (e.g. if it was for a specific production line: bottling of white  wine in 0,5 l glass bottles).
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+1 
+DF8-1-2.2/4 V1 
+CLARIFICATION ON PART 1 – 2.2 SCOPE OF THE IFS FOOD  AUDIT 
+1.2.2.4 Which audit scope applies for a company which produces a wide  range of prepacked products with 3 or more than 3 product  
+scopes with High Pressure Processing (HPP)? 
+In such a case, the following scopes shall be chosen: product scope 7 and processing  step P2. The same applies to auditor qualification.
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+1 
+DF8-1-2.2/9 V1 
+CLARIFICATION ON PART 1 – 2.2 SCOPE OF THE IFS FOOD  AUDIT 
+1.2.2.9 Clarification about how to explain in the report special  situations where same or similar raw material are bought than  the food processed by the audited production site 
+Example: A ready-to-eat salad contains toppings that are bought as raw material but  the audited production site also processes same or similar toppings. 
+In such a case, the situation shall be clearly explained in the report (company profile,  additional information) and it shall be stated that the finished product contains top pings that are produced by the audited production site as well as toppings that are  purchased as raw material.  
+Note: In case the toppings are produced on behalf of the certified site as partly out sourced processes the sentence “Besides own production, the company has partly  outsourced processes” shall be added on the certificate and description of the partly  outsourced processes shall be given in the report.
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+1 
+DF8-1-2.3.4/3 V1 
+CLARIFICATION ON PART 1 – 2.3.4 EXTENSION AUDIT 
+1.2.3 Type of IFS Food Audits 
+1.2.3.4 Extension Audit 
+1.2.3.4.3 Processing of sparkling wine: when to perform the audit? 
+For the production of sparkling wine and champagne via bottle fermentation, there  are two (2) sensitive processing steps: 
+• Tirage: operation of re-fermentation in which the bottle is opened again to add  extra yeasts before re-closing the bottle after the first bottling step. 
+• Disgorging: operation after the re-fermentation in which the sediments are re moved via the ejection of the previously frozen temporary cork. 
+Therefore both two (2) steps of tirage and disgorging shall be audited on-site during  an IFS Food Audit. 
+When using tank fermentation procedures, at least the contents must be audited.
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+1 
+DF8-1-2.4.2/1 V1 
+CLARIFICATION ON PART 1 – 2.4.2 UNANNOUNCED AUDIT  OPTION 
+1.2.4 IFS Food Audit options 
+1.2.4.2 Unannounced Audit option 
+1.2.4.2.1 Unannounced Audit registration 
+An unannounced audit registration will be deactivated in the IFS Database if nothing  has been uploaded within three (3) months of the last possible day of the audit time  window, even if a calendar entry has been made. In case there was no calendar entry,  the registration is directly deactivated after the last day of the audit.  
+The certification body shall tick the box “Unannounced audit” in the IFS Database.  When the audit has been performed, the certification body shall provide the audit  dates in the database, at latest, 2 working days after the first audit day. This will ensure  that the database users are informed that the audit has taken place and that the certi 
+fication process is ongoing. 
+Note: In case the process is not followed accordingly, the certification body shall con tact IFS Customer Support. It has to be considered that associated costs may apply.
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+2 DF8-2-4.19/3 V1 
+CLARIFICATION ON PART 2 – 4.19 ALLERGEN RISK  MITIGATION 
+PART 2 – List of IFS Food audit requirements 
+2.4 Operational processes 
+2.4.19 Allergen risk mitgation 
+2.4.19.3 Requirement clarification 
+According to this requirement, the company needs to follow the legislation for the  declaration of the allergens in the finished products. For the adventitious or technical ly unavoidable presence, the labelling of legally declared allergens and traces shall be  based on risks. When considering the risk of unintentional allergen entries, both risks  from the declarable allergens processed in the company and unintentional allergens  coming from raw materials shall be taken into account for determining the labelling of  finished products.
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+2 DF8-2-4/21.2 V1 
+CLARIFICATION ON PART 2 – 4.21 FOOD DEFENCE 
+2.4.21 Food defence 
+2.4.21.2 Clarification about the (non) applicability of a part of  requirement 4.21.2 
+The part of the requirement on how to manage external inspections and regulatory  visits is not applicable if no food defence legislation exists in the country where the  audit takes place which requires external food defence inspections and/or regulatory  food defence visits, or if the company doesn’t export to the US and no FDA food de 
+fence inspection is required. 
+As a result, food safety inspections which are performed by authorities are not in volved in this requirement.
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+3 DF8-3-3.1.5/1 V1 
+CLARIFICATION ON PART 3 – 3.1.5 MAINTENANCE OF  AUDITOR APPROVAL 
+PART 3 – Requirements for accreditation bodies,  certification bodies and auditors  
+IFS accreditation and Certification process 
+3.3 Requirements for IFS Food Auditors, Reviewers, In-house Trainers and Witness Auditors 
+3.3.1 Requirements for IFS Food Auditors 
+3.3.1.5 Maintenance of auditor’s approval 
+3.3.1.5.1 Clarification on the maintenance of auditor approval in certain  specific situations 
+Every year IFS Food Auditors shall perform a minimum of five (5) IFS Food Audits as a  lead or co-auditor. 
+This is applicable from the first full year following approval as an IFS Food Auditor. 
+In the following specific situations: 
+• In case the IFS Food Auditor is also a manager for IFS within the certification body 
+• In case the product scope(s) the auditor has is/are in a specific country where there  is a lack of customers 
+• In case it is in a specific emerging market  
+It is acceptable to perform at least 1 IFS Food audit and 4 audits as Lead-or Co auditor  according to GFSI recognised standards every year, nevertheless certification bodies  shall do their utmost to perform as many IFS Food Audits per auditor as possible.  
+In case of any other special situations, it is mandatory to contact the IFS Auditor Man agement for a case by case decision.
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+3 DF8-3-3.2/1 V1 
+CLARIFICATION ON PART 3 – 3.2 REQUIREMENTS FOR IFS  REVIEWERS 
+3.3.2 Requirements for IFS Reviewers 
+3.3.2.1 Clarification about specific types of audits which are not  accepted for a sign-off audit, witness audit and auditor scope  extension 
+A multi-location production site cannot be used for a sign-off audit, because the  checklist is not completely audited (central management processes). 
+Extension audits are not acceptable for witness audits or auditor scope extensions.ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+4 DF8-4-2.1/1 V1 
+CLARIFICATION ON PART 4 – 2.1 MINIMUM REQUIREMENTS  FOR THE IFS AUDIT REPORT 
+PART 4 – Reporting, IFS Software and IFS Database 
+4.2 Reporting 
+4.2.1 Minimum requirements for the IFS Audit Report 
+4.2.1.1 How is the COID managed for companies in some specific cases? • In the case of a multi-legal entity production site: 
+1) multiple legal entities at one physical location with the same scope: one audit,  separate COIDs, duplication of certificate and report.  
+ The COIDs shall be mentioned in the audit overview of each audit report and  linked in the IFS Database (visible for CBs only). 
+2) multiple legal entities at one physical location with different scopes: separate  COIDs, separate report and certificate.  
+ The COIDs shall be mentioned in the audit overview of each audit report and  linked in the IFS Database (visible for CBs only).  
+ All audits shall be performed by one certification body.  
+ The audit duration shall be calculated separately for each COID.  
+• In the case of multi-location production sites with or without head-office: separate  COIDs are created for each production site and linked in the IFS Database. 
+Note: In each case where the COIDs are linked, a notification will be sent out to those  who marked the company as favourite. 
+In general, a new COID shall be created, if the new legal entity is not taking over the  rights from the previous legal entity (data protection issue). In such a case the certifi cation body decides if the old reports and certificate with the new legal entity is up loaded under the new COID (it will then be considered as initial audit for the new  COID). 
+• If a CB creates by mistake a new COID for a company with an already existing COID,  they shall contact IFS customer support.  
+Read more on next page
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+4 DF8-4-2.1/1 V1 
+// 4.2.1.1 How is the COID managed for companies in some specific cases?
+• If a company has a new address but the same employees, same equipment, same  processes: a new COID has to be created and a new audit shall be organised. The  old audits are visible and clearly connected to the old COID. The access rights to the  report, the action plan and the audits comparison are transferred to the new COID.  Both COIDs will be linked in the IFS Database. The first audit performed at the new  site is an initial audit. Therefore, the rule regarding 3 consecutive audits by the same  auditor does not apply. The certification body decides whether the certificate of the  “old” site shall be withdrawn as soon as production stops. 
+• If a company changes its legal entity but has the same address, same employees,  same equipment, same processes: a new COID has to be created. The old audits are  not visible but the old COID is provided. The access rights to the report, the action  plan and the audits comparison are not transferred. The certification body decides  if the old report and certificate with the new legal entity is uploaded under the new  COID (it will be considered as an initial audit for the new legal entity) or if a new  audit shall be done. The rule regarding 3 consecutive audits by the same auditor  applies. It is recommended that the action plan of the “old” site is checked by the  auditor especially in case of any food safety and quality management system devi ation(s) and/or previous non-conformities. 
+The COID shall not be changed in the following cases: 
+• If a company maintains the same legal entity with the same employees, same pro duction processes and just changes the legal form (example: Jelly LTD to Jelly LLP). 
+• If a company maintains the same legal entity with the same employees, same pro duction processes and just changes the company name (example: Jelly sweet LTD  to Jelly LTD). 
+• If the management of the company changes (new owner) but has the same em ployees, same equipment and the same processes: the CB shall perform a risk as sessment and audit whether it is necessary to perform a “control-audit” to check  that the current certificate is still ensured. 
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+4 DF8-4-2.1/2 V1 
+CLARIFICATION ON PART 4 – 2.1 MINIMUM REQUIREMENTS  FOR THE IFS AUDIT REPORT 
+4.2.1.2 Which information of the report shall be translated in English? 
+The following information of the report shall be translated into English: 
+• Company profile (company data + audit data) 
+• Audit scope 
+• Partly outsourced processes 
+• Exclusions 
+• Overall summary of compulsory information 
+• Deviations and non-conformities
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+4 DF8-4-4.4/1 V1 
+CLARIFICATION ON PART 4 – 4 THE IFS DATABASE 
+4.4 The IFS Database 
+4.4.1 Form for extraordinary information to be filled out by the  certification bodies 
+The following information needs to be added in the description: 
+• Company (COID) 
+• Product (including private labels and/or brands); 
+• Date of recall/withdrawal; 
+• Involved batches; 
+• Reason of the recall 
+After ten (10) working days from the initial information in the IFS Database: 
+• Cause of the incident (if relevant with corrections and corrective actions taken by  the company) 
+• The actions taken by the certification body. Especially with reference to the certifi cation status of the company.
+ALL CLARIFICATIONS  
+IFS FOOD VERSION 8 DOCTRINE 
+Contact details of the IFS Offices 
+GERMANY 
+IFS Office Berlin 
+Am Weidendamm 1A 
+DE -10117 Berlin 
+Phone: +49(0)30726105374 
+Email: info@ifs-certification.com 
+ITALY 
+IFS Office Milan 
+Federdistribuzione 
+Via Albricci 8 
+IT -20122 Milan 
+Phone: +390289075150 
+Email: ifs-milano@ifs-certification.com 
+POLAND | CENTRAL EAST EUROPE IFS Representative CEE Marek Marzec IFS Representative Poland Beata Studzińska Marciniak  
+ul. Serwituty 25 
+PL -02-233 Warsaw 
+Phone: +48 888787440 
+Email: ifs-poland@ifs-certification.com 
+CZECH REPUBLIC 
+IFS Representative Miroslav Šuška Phone: +420603893590 
+Email: msuska@qualifood.cz 
+BRAZIL 
+IFS Office Brazil 
+Rua Antônio João 800 
+BR-79200-000 Aquidauana / MS Brazil Phone: +5567981514560 
+Email: cnowak@ifs-certification.com 
+NORTH AMERICA 
+IFS Representative Pius Gasser 
+Phone: +14165642865 
+Email: gasser@ifs-certification.com 
+FRANCE 
+IFS Office Paris 
+14 rue de Bassano 
+FR-75016 Paris 
+Phone: +33140761723 
+Email: ifs-paris@ifs-certification.com 
+SPAIN 
+IFS Representative Beatriz Torres Carrió Phone: +34610306047 
+Email: torres@ifs-certification.com 
+HUNGARY 
+IFS Representative László Győrfi 
+Phone: +36 301901342 
+Email: gyorfi@ifs-certification.com 
+TÜRKIYE  
+IFS Representative Ezgi Dedebas Ugur Phone: +905459637458 
+Email: ifs-turkiye@ifs-certification.com 
+ROMANIA 
+IFS Representative Ionut Nache 
+Phone: +40722517971 
+Email: ionut.nache@inaq.ro 
+LATIN AMERICA 
+IFS Office Chile 
+Av. Apoquindo 4700, Piso 12, 
+CL - Las Condes, Santiago 
+Phone: +56954516766 
+Email: chile@ifs-certification.com 
+ASIA 
+IFS Office Asia 
+IQC (Shanghai) Co., Ltd. 
+Man Po International Business Center Rm 205, No. 660, Xinhua Road, Changning District, CN-200052 Shanghai 
+Phone: +8618019989451 
+Email: china@ifs-certification.com asia@ifs-certification.com 
+In case of any queries regarding the interpretation of IFS Standards and Programs, please contact  standardmanagement@ifs-certification.com 
+IFS FOOD VERSION 8 DOCTRINE 
+ifs-certification.com
+© IFS, JUNE 2023
