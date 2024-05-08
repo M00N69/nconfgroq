@@ -24,8 +24,12 @@ def load_documents():
     return documents
 
 def generate_response(user_input, documents):
-    # Example simplified system instruction
-    response = "Réponse basée sur l'analyse des documents chargés et la question: " + user_input
+    # Utilisation du client API avec les documents chargés pour générer une réponse
+    client = get_groq_client()
+    combined_text = " ".join(documents)  # Combinaison des textes pour analyse
+    system_instruction = f"Analyser et répondre basée sur le contexte des normes IFS et la question: {user_input}"
+    # Supposons que le client Groq ait une méthode pour traiter les entrées
+    response = client.process_input(combined_text, system_instruction)  # Méthode hypothétique
     return response
 
 def main():
