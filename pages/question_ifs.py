@@ -47,7 +47,7 @@ def calculate_score(link_info, response):
 def generate_response(user_input):
     # Combines user input with predefined system instructions
     system_instruction = """
-    The response shall always be in the same language than the user question. Response should be with more details possible   
+    The response shall be in French unless asked differently than the user question. Response should be with more details possible   
     The response will use the provided documents but will not expose direct links or references.
     The model will aim to provide IFS V8 requirement references where applicable check carefully and apply only clause from IFS FOOD AUDIT CHECKLIST LIST OF IFS FOOD AUDIT REQUIREMENTS in the IFS_Food_v8_standard_EN_1711635033 .Suggest any other question around same subject
     """
