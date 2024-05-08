@@ -1,5 +1,6 @@
 import streamlit as st
 from groq import Groq
+import requests
 from bs4 import BeautifulSoup
 
 def get_groq_client():
