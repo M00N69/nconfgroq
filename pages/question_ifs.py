@@ -32,9 +32,11 @@ def generate_response(user_input, documents):
     client = get_groq_client()
 
     # Configurer les paramètres de la requête
-    system_instruction = " Utiliser exclusivement les informations du contexte fourni pour générer des réponses. Les réponses doivent être en français
-        basées uniquement sur les données fournies sans extrapolation. Aucun lien externe ou référence directe à des sources non incluses
-        dans les documents ne doit être utilisé. Vérifier la précision des clauses mentionnées par rapport au fichier IFSV8.txt."
+    system_instruction = """
+    Utiliser exclusivement les informations du contexte fourni pour générer des réponses. Les réponses doivent être en français,
+    basées uniquement sur les données fournies sans extrapolation. Aucun lien externe ou référence directe à des sources non incluses
+    dans les documents ne doit être utilisé. Vérifier la précision des clauses mentionnées par rapport au fichier IFSV8.txt.
+    """
     chat_completion = client.chat.completions.create(
         messages=[
             {"role": "user", "content": user_input},
