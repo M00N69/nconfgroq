@@ -9,15 +9,21 @@ def get_groq_client():
 @st.cache(allow_output_mutation=True, ttl=86400)
 def load_documents():
     """Load documents from specified URLs and handle errors."""
-    urls = ["https://raw.githubusercontent.com/m00n69/nconfgroq/main/ifs_food_v8_audit_checklist_guideline_v1_en_1706090430.txt"]
+    urls = [
+        "https://raw.githubusercontent.com/m00n69/nconfgroq/main/ifs_food_v8_audit_checklist_guideline_v1_en_1706090430.txt"
+    ]
     documents = []
     for url in urls:
-        response = requests.get(url)
-        if response.status_code == 200:
-            documents.append(response.text)
-        else:
-            st.error(f"Failed to load document from: {url}")
-            return None
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                documents.append(response.text)
+            else:
+                st.error(f"Failed to load document from: {url}. Status code: {response.status_code}")
+        except Exception as e:
+            st.error(f"Failed to load document from: {url}. Error: {e}")
+    if not documents:
+        st.error("No documents loaded successfully.")
     return documents
 
 def generate_response(user_input, documents):
