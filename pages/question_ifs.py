@@ -10,7 +10,7 @@ def get_groq_client():
 def load_documents():
     """Charge les documents à partir des URLs spécifiées et gère les erreurs."""
     urls = [
-        "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFSV8.txt"
+        "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFS_Food_v8_audit_checklist_guideline_v1_EN_1706090430.txt"
     ]
     documents = []
     for url in urls:
