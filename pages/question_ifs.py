@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from groq import groq
+from groq import Groq  # Import the Groq API client assuming this is a valid import
 
 def get_groq_client():
     """Initialize and return a Groq client with the API key."""
