@@ -27,7 +27,7 @@ def load_documents(uploaded_documents):
         return documents
 
 def generate_response(user_input, documents):
-    """Generate a response to a user query using Groq and loaded documents."""
+    """Generate a response to user query using Groq and loaded documents."""
     client = get_groq_client()
 
     system_instruction = """
