@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from groq import Groq
+from groq import Groq  # Import the Groq API client assuming this is a valid import
 
 # Placeholder for the long text (replace with actual content)
 long_text_placeholder = """
