@@ -1,17 +1,15 @@
 import streamlit as st
 import requests
-from groq import Groq
+from groq import groq
 
 def get_groq_client():
-    """Initialise et retourne un client Groq avec la clé API."""
-    return Groq(api_key=st.secrets["GROQ_API_KEY"])
+    """Initialize and return a Groq client with the API key."""
+    return groq(api_key=st.secrets["groq_api_key"])
 
 @st.cache(allow_output_mutation=True, ttl=86400)
 def load_documents():
-    """Charge les documents à partir des URLs spécifiées et gère les erreurs."""
-    urls = [
-        "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFS_Food_v8_audit_checklist_guideline_v1_EN_1706090430.txt"
-    ]
+    """Load documents from specified URLs and handle errors."""
+    urls = ["https://raw.githubusercontent.com/m00n69/nconfgroq/main/ifs_food_v8_audit_checklist_guideline_v1_en_1706090430.txt"]
     documents = []
     for url in urls:
         response = requests.get(url)
@@ -23,34 +21,34 @@ def load_documents():
     return documents
 
 def generate_response(user_input, documents):
-    """Génère une réponse à la requête de l'utilisateur en utilisant Groq et les documents chargés."""
-    # Créer un client Groq
+    """Generate a response to user query using Groq and loaded documents."""
+    # Create a Groq client
     client = get_groq_client()
 
-    # Configurer les paramètres de la requête
+    # Configure request parameters
     system_instruction = """
-    Utiliser exclusivement les informations du contexte fourni, en particulier les documents chargés, pour générer des réponses. Les réponses doivent être en français, basées uniquement sur les données fournies sans extrapolation. Aucun lien externe ou référence directe à des sources non incluses dans les documents ne doit être utilisé. Vérifier la précision des clauses mentionnées par rapport au fichier IFSV8.txt en utilisant les autres documents comme références complémentaires.
+    Utilisez exclusivement les informations du contexte fourni, en particulier les documents chargés, pour générer des réponses. Les réponses doivent être en français, basées uniquement sur les données fournies sans extrapolation. Aucun lien externe ou référence directe à des sources non incluses dans les documents ne doit être utilisé. Vérifiez la précision des clauses mentionnées par rapport au fichier ifsv8.txt en utilisant les autres documents comme références complémentaires.
     """
 
-    # Créer les messages pour la requête Groq
+    # Create messages for Groq query
     messages = [
         {"role": "user", "content": user_input},
         {"role": "system", "content": system_instruction}
     ]
-    # Ajouter chaque document comme un message séparé
+    # Add each document as a separate message
     for doc in documents:
         messages.append({"role": "assistant", "content": doc})
 
-    # Envoyer la requête à Groq
+    # Send request to Groq
     chat_completion = client.chat.completions.create(
         messages=messages,
-        model="llama3-8b-8192"  # Ou un autre modèle approprié
+        model="llama3-8b-8192"  # Use an appropriate model
     )
     return chat_completion.choices[0].message.content
 
 def main():
-    """Interface utilisateur Streamlit pour l'interaction avec le système de chat."""
-    st.title("Question sur les normes IFS V8")
+    """Streamlit UI for interacting with the chat system."""
+    st.title("Question sur les normes IFS v8")
     documents = load_documents()
     if documents:
         user_input = st.text_area("Posez votre question ici:", height=300)
