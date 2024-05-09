@@ -4,7 +4,7 @@ from groq import Groq
 
 def get_groq_client():
     """Initialize and return a Groq client with the API key."""
-    return groq(api_key=st.secrets["GROQ_API_KEY"])
+    return groq(api_key=st.secrets["groq_api_key"])
 
 @st.cache(allow_output_mutation=True, ttl=86400)
 def load_documents(uploaded_documents):
