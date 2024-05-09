@@ -203,7 +203,7 @@ def get_groq_client():
 @st.cache(allow_output_mutation=True, ttl=86400)
 def load_documents():
     urls = [
-        "https://raw.githubusercontent.com/m00n69/nconfgroq/main/ifs_food_v8_audit_checklist_guideline_v1_en_1706090430.txt"
+        "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFS_Food_v8_standard_FR_1681804144%20(2).txt"
     ]
     documents = []
     for url in urls:
