@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 from groq import Groq
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 def get_groq_client():
     """Initialise et retourne un client Groq avec la clé API."""
@@ -26,33 +25,28 @@ def load_documents():
             return None
     return documents
 
-def relevance_score(document, query):
-    """Calcule un score de pertinence TF-IDF entre un document et une requête."""
-    vectorizer = TfidfVectorizer()
-    tfidf = vectorizer.fit_transform([document, query])
-    return tfidf[0].dot(tfidf[1].T).toarray()[0, 0]
-
 def generate_response(user_input, documents):
     """Génère une réponse à la requête de l'utilisateur en utilisant Groq et les documents chargés."""
     # Créer un client Groq
     client = get_groq_client()
 
-    # Calcul des scores de pertinence
-    scores = [relevance_score(doc, user_input) for doc in documents]
-
-    # Ajout des scores comme métadonnées
-    documents_with_scores = [{"text": doc, "score": score} for doc, score in zip(documents, scores)]
-
     # Configurer les paramètres de la requête
     system_instruction = """
-    Utiliser exclusivement les informations du contexte fourni pour générer des réponses, en accordant une priorité absolue aux documents chargés et en tenant compte de leurs scores de pertinence. Les réponses doivent être en français, basées uniquement sur les données fournies sans extrapolation. Aucun lien externe ou référence directe à des sources non incluses dans les documents ne doit être utilisé. Vérifier la précision des clauses mentionnées par rapport au fichier IFSV8.txt en utilisant les autres documents comme références complémentaires.
+    Utiliser exclusivement les informations du contexte fourni, en particulier les documents chargés, pour générer des réponses. Les réponses doivent être en français, basées uniquement sur les données fournies sans extrapolation. Aucun lien externe ou référence directe à des sources non incluses dans les documents ne doit être utilisé. Vérifier la précision des clauses mentionnées par rapport au fichier IFSV8.txt en utilisant les autres documents comme références complémentaires.
     """
+
+    # Créer les messages pour la requête Groq
+    messages = [
+        {"role": "user", "content": user_input},
+        {"role": "system", "content": system_instruction}
+    ]
+    # Ajouter chaque document comme un message séparé
+    for doc in documents:
+        messages.append({"role": "assistant", "content": doc})
+
+    # Envoyer la requête à Groq
     chat_completion = client.chat.completions.create(
-        messages=[
-            {"role": "user", "content": user_input},
-            {"role": "system", "content": system_instruction},
-            {"role": "assistant", "content": documents_with_scores}  # Documents avec scores
-        ],
+        messages=messages,
         model="llama3-8b-8192"  # Ou un autre modèle approprié
     )
     return chat_completion.choices[0].message.content
