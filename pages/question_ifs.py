@@ -22,7 +22,7 @@ communicated effectively and in a timely manner to the relevant personnel.
 
 def get_groq_client():
     """Initialize and return a Groq client with the API key."""
-    return Groq(api_key=st.secrets["groq_api_key"])
+    return Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 @st.cache(allow_output_mutation=True, ttl=86400)
 def load_documents():
