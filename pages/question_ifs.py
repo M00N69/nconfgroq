@@ -42,7 +42,7 @@ def generate_response(user_input, documents):
             {"role": "user", "content": user_input},
             {"role": "system", "content": system_instruction}
         ],
-        model="mixtral-8x7b-32768"
+        model="llama3-8b-8192"
     )
     return chat_completion.choices[0].message.content
 
