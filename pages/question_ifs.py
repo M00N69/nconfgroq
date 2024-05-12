@@ -2,8 +2,12 @@ import streamlit as st
 import requests
 from groq import Groq
 import bcrypt
+import tiktoken
 
-# Placeholder for the long text (replace with actual content)
+# Configuration des paramètres de chunking
+MAX_TOKENS_PER_CHUNK = 4000
+
+# Placeholder for additional document content
 long_text_placeholder = """
 1 Governance and commitment
 1.1 Policy
@@ -21,23 +25,25 @@ policies and responsibilities, training, employee feedback on food safety relate
 """
 
 def login(username, password):
+    """Authentifie l'utilisateur avec bcrypt."""
     try:
         user_dict = st.secrets["users"]
         if username in user_dict and bcrypt.checkpw(password.encode('utf-8'), user_dict[username].encode('utf-8')):
             st.session_state["logged_in"] = True
-            st.success("Access granted! Proceed to the page.")
+            st.success("Accès autorisé! Vous pouvez accéder à la page.")
         else:
-            st.error("Incorrect username or password")
+            st.error("Nom d'utilisateur ou mot de passe incorrect.")
     except KeyError:
-        st.error("User credentials are not set up properly in secrets.")
+        st.error("Les informations d'identification de l'utilisateur ne sont pas correctement configurées dans les secrets.")
     except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
+        st.error(f"Une erreur s'est produite: {str(e)}")
 
 def secure_page():
-    st.title("Question IFS - Secure Page")
+    """Affiche la page sécurisée pour les utilisateurs connectés."""
+    st.title("Questions IFS - Page sécurisée")
     if st.session_state.get("logged_in"):
-        st.write("You are logged in!")
-        st.warning("Secure content here.")
+        st.write("Vous êtes connecté!")
+        st.warning("Contenu sécurisé ici.")
 
         documents = load_documents()
 
@@ -48,19 +54,21 @@ def secure_page():
                     response = generate_response(user_input, documents)
                     st.write(response)
         else:
-            st.error("Document loading failed, cannot proceed.")
+            st.error("Échec du chargement des documents, impossible de continuer.")
 
     else:
-        st.warning("Please log in to access this page.")
+        st.warning("Veuillez vous connecter pour accéder à cette page.")
 
 def get_groq_client():
-    """Initialize and return a Groq client with the API key."""
+    """Initialise et renvoie un client Groq avec la clé API."""
     return Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 @st.cache(allow_output_mutation=True, ttl=86400)
 def load_documents():
+    """Charge les documents à partir des URLs fournies."""
     urls = [
-        "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFS_Food_v8_standard_FR_1681804144%20(2).txt"
+        "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFS_Food_v8_standard_FR_1681804144%20(2).txt",
+        "https://raw.githubusercontent.com/M00N69/nconfgroq/main/IFS_Food_v8_audit_checklist_guideline_v1_EN_1706090430.txt"
     ]
     documents = []
     for url in urls:
@@ -68,17 +76,34 @@ def load_documents():
         if response.status_code == 200:
             documents.append(response.text)
         else:
-            st.error(f"Failed to load document from: {url}. Status code: {response.status_code}")
+            st.error(f"Échec du chargement du document depuis: {url}. Code d'état: {response.status_code}")
     if not documents:
-        st.error("No documents loaded successfully.")
+        st.error("Aucun document chargé avec succès.")
 
-    # Add the long text as additional document content
+    # Ajout du contenu textuel supplémentaire 
     documents.append(long_text_placeholder)
 
     return documents
 
+def chunk_text(text, max_tokens=MAX_TOKENS_PER_CHUNK):
+    """Découpe le texte en chunks avec un nombre maximum de tokens."""
+    encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
+    tokens = encoding.encode(text)
+    chunks = []
+    current_chunk = []
+
+    for token in tokens:
+        current_chunk.append(token)
+        if len(current_chunk) >= max_tokens:
+            chunks.append(encoding.decode(current_chunk))
+            current_chunk = []
+
+    if current_chunk:
+        chunks.append(encoding.decode(current_chunk))
+    return chunks
+
 def generate_response(user_input, documents):
-    """Generate a response to the user query using Groq and the loaded documents."""
+    """Génère une réponse à la requête de l'utilisateur en utilisant Groq et les documents chargés."""
     client = get_groq_client()
 
     system_instruction = """
@@ -89,31 +114,39 @@ def generate_response(user_input, documents):
         {"role": "user", "content": user_input},
         {"role": "system", "content": system_instruction}
     ]
+
+    total_tokens = 0
     for doc in documents:
-        messages.append({"role": "assistant", "content": doc})
+        for chunk in chunk_text(doc):
+            total_tokens += len(tiktoken.encoding_for_model("gpt-3.5-turbo").encode(chunk))
+            messages.append({"role": "assistant", "content": chunk})
+
+    # Choix du modèle en fonction du nombre de tokens
+    model_id = "mixtral-8x7b-32768" if total_tokens <= 32000 else "llama3-8b-8192"
 
     chat_completion = client.chat.completions.create(
         messages=messages,
-        model="llama3-8b-8192"
+        model=model_id
     )
 
     return chat_completion.choices[0].message.content
 
 def main():
+    """Fonction principale de l'application Streamlit."""
     st.title("Question sur les normes IFS v8")
 
     if "logged_in" not in st.session_state:
         st.session_state["logged_in"] = False
 
     if not st.session_state["logged_in"]:
-        # Login Section
-        st.subheader("Login Section:")
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        if st.button("Login"):
+        # Section de connexion
+        st.subheader("Section de connexion:")
+        username = st.text_input("Nom d'utilisateur")
+        password = st.text_input("Mot de passe", type="password")
+        if st.button("Connexion"):
             login(username, password)
     else:
-        # Secure Page 
+        # Page sécurisée 
         secure_page()
 
 if __name__ == "__main__":
