@@ -5,7 +5,7 @@ import bcrypt
 import tiktoken
 
 # Configuration des paramètres de chunking
-MAX_TOKENS_PER_CHUNK = 4000
+MAX_TOKENS_PER_CHUNK = 2000
 
 # Placeholder for additional document content
 long_text_placeholder = """
