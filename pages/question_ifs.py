@@ -26,7 +26,7 @@ def secure_page():
 
 def get_groq_client():
     """Initialize and return a Groq client with the API key."""
-    return groq(api_key=st.secrets["groq_api_key"])
+    return groq(api_key=st.secrets["GROQ_API_KEY"])
 
 # Your load_documents and generate_response functions go here
 # Placeholder for the long text (replace with actual content)
