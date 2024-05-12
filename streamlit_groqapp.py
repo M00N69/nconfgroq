@@ -1,6 +1,7 @@
 import streamlit as st
 import bcrypt
 from groq import Groq  # Import the Groq API client assuming this is a valid import
+from login_component import login_page
 
 # Setting page configuration
 st.set_page_config(
