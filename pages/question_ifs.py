@@ -279,15 +279,19 @@ def generate_response(user_input, documents):
 def main():
     st.title("Question sur les normes IFS v8")
 
-    # Login Section
-    st.subheader("Login Section:")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    if st.button("Login"):
-        login(username, password)
+    if "logged_in" not in st.session_state:
+        st.session_state["logged_in"] = False
 
-    # Secure Page check
-    secure_page()
+    if not st.session_state["logged_in"]:
+        # Login Section
+        st.subheader("Login Section:")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        if st.button("Login"):
+            login(username, password)
+    else:
+        # Secure Page 
+        secure_page()
 
 if __name__ == "__main__":
     main()
