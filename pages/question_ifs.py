@@ -115,7 +115,7 @@ def generate_embeddings(texts, model):
 def search_relevant_chunks(question, chunks, embeddings, top_k=MAX_CONTEXT_CHUNKS):
     """Recherche les chunks les plus pertinents pour la question."""
     question_embedding = generate_embeddings([question], get_embedding_model())
-    similarities = util.pytorch_cos_sim(question_embedding, embeddings)[0]
+    similarities = util.pytorch_cos_sim(question_embedding, embeddings).squeeze()
     # Obtenez les indices des chunks les plus similaires
     top_indices = similarities.argsort(descending=True)[:top_k].tolist()
     return [chunks[i] for i in top_indices]
