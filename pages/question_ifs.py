@@ -1,34 +1,8 @@
 import streamlit as st
 import requests
-from groq import Groq  # Adjust the import statement here
+from groq import Groq
 import bcrypt
 
-def login(username, password):
-    try:
-        user_dict = st.secrets["users"]
-        if username in user_dict and bcrypt.checkpw(password.encode('utf-8'), user_dict[username].encode('utf-8')):
-            st.session_state["logged_in"] = True
-            st.success("Access granted! Proceed to the page.")
-        else:
-            st.error("Incorrect username or password")
-    except KeyError:
-        st.error("User credentials are not set up properly in secrets.")
-    except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
-
-def secure_page():
-    st.title("Question IFS - Secure Page")
-    if st.session_state.get("logged_in"):
-        st.write("You are logged in!")
-        st.warning("Secure content here.")
-    else:
-        st.warning("Please log in to access this page.")
-
-def get_groq_client():
-    """Initialize and return a Groq client with the API key."""
-    return groq(api_key=st.secrets["GROQ_API_KEY"])
-
-# Your load_documents and generate_response functions go here
 # Placeholder for the long text (replace with actual content)
 long_text_placeholder = """
 1 Governance and commitment
@@ -223,6 +197,39 @@ shall be available.
 
 """
 
+def login(username, password):
+    try:
+        user_dict = st.secrets["users"]
+        if username in user_dict and bcrypt.checkpw(password.encode('utf-8'), user_dict[username].encode('utf-8')):
+            st.session_state["logged_in"] = True
+            st.success("Access granted! Proceed to the page.")
+        else:
+            st.error("Incorrect username or password")
+    except KeyError:
+        st.error("User credentials are not set up properly in secrets.")
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
+
+def secure_page():
+    st.title("Question IFS - Secure Page")
+    if st.session_state.get("logged_in"):
+        st.write("You are logged in!")
+        st.warning("Secure content here.")
+
+        documents = load_documents()
+
+        if documents:
+            user_input = st.text_area("Posez votre question ici:", height=300)
+            if st.button("Envoyer"):
+                with st.spinner('Génération de la réponse en cours...'):
+                    response = generate_response(user_input, documents)
+                    st.write(response)
+        else:
+            st.error("Document loading failed, cannot proceed.")
+
+    else:
+        st.warning("Please log in to access this page.")
+
 def get_groq_client():
     """Initialize and return a Groq client with the API key."""
     return Groq(api_key=st.secrets["GROQ_API_KEY"])
@@ -272,19 +279,6 @@ def generate_response(user_input, documents):
 def main():
     st.title("Question sur les normes IFS v8")
 
-    documents = load_documents()
-
-    if documents:
-        user_input = st.text_area("Posez votre question ici:", height=300)
-        if st.button("Envoyer"):
-            with st.spinner('Génération de la réponse en cours...'):
-                response = generate_response(user_input, documents)
-                st.write(response)
-    else:
-        st.error("Document loading failed, cannot proceed.")
-def main():
-    st.title("Question sur les normes IFS v8")
-
     # Login Section
     st.subheader("Login Section:")
     username = st.text_input("Username")
@@ -295,9 +289,5 @@ def main():
     # Secure Page check
     secure_page()
 
-    # Additional code for loading documents and generating responses can follow here
-
-if __name__ == "__main__":
-    main()
 if __name__ == "__main__":
     main()
