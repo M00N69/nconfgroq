@@ -4,6 +4,7 @@ from groq import Groq
 import bcrypt
 import tiktoken
 from sentence_transformers import SentenceTransformer, util
+import torch
 
 # Configuration 
 MODEL_NAME = 'all-mpnet-base-v2'  # Modèle d'embedding
