@@ -6,3 +6,4 @@ bcrypt
 beautifulsoup4
 requests
 tiktoken
+sentence-transformers
