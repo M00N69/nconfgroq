@@ -136,6 +136,9 @@ def generate_response(user_input, documents):
         all_chunks.extend(chunks)
         all_embeddings.extend(generate_embeddings(chunks, get_embedding_model()))
 
+    # Concaténer les embeddings en un seul tenseur
+    all_embeddings = torch.cat(all_embeddings, dim=0)
+
     # Recherche des chunks pertinents
     relevant_chunks = search_relevant_chunks(user_input, all_chunks, all_embeddings)
 
