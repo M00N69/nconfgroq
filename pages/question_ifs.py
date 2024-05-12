@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from groq import groq
+from groq import Groq  # Adjust the import statement here
 import bcrypt
 
 def login(username, password):
