@@ -5,6 +5,7 @@ import bcrypt
 import tiktoken
 from sentence_transformers import SentenceTransformer, util
 import torch
+from torch.nn import functional as F  # Importer functional pour normalize
 
 # Configuration 
 MODEL_NAME = 'all-mpnet-base-v2'  # Modèle d'embedding
