@@ -2,6 +2,12 @@ import streamlit as st
 import requests
 from groq import Groq  # Adjust the import statement here
 
+st.title("Queston IFS- Secure Page")
+if st.session_state.get("logged_in"):
+    st.write("You are logged in!")
+else:
+    st.warning("Please log in to access this page.")
+
 # Placeholder for the long text (replace with actual content)
 long_text_placeholder = """
 1 Governance and commitment
