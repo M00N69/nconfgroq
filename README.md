@@ -5,6 +5,7 @@ Importation des bibliothèques
 streamlit : bibliothèque pour créer des applications web interactives
 bcrypt : bibliothèque pour crypter les mots de passe
 Groq : bibliothèque pour interagir avec l'API de Groq
+
 Configuration de la page
 
 st.set_page_config : définit les paramètres de la page, tels que le titre, l'icône, la disposition et les éléments du menu
@@ -14,12 +15,15 @@ st.session_state : permet de stocker des informations de session, telles que le 
 Fonction de connexion
 
 login : fonction pour vérifier les informations de connexion et authentifier l'utilisateur
+les mots de passes sont créés dns un colab et bcrypt en plus du secret de streamlit
 Page de connexion
 
 login_page : page de connexion avec un formulaire pour saisir le nom d'utilisateur et le mot de passe
 Fonction de génération de réponse
 
 generate_response : fonction pour générer une réponse en fonction de l'input de l'utilisateur
+Uniquement basé sur les instructions dans le code
+
 Page de reformulation
 
 page_reformulation : page pour reformuler les non-conformités avec un champ de saisie pour l'utilisateur et un bouton pour envoyer la requête
