@@ -7,10 +7,10 @@ from sentence_transformers import SentenceTransformer, util
 import torch
 from torch.nn import functional as F  # Importer functional pour normalize
 
-# Configuration 
+# Configuration
 MODEL_NAME = 'all-mpnet-base-v2'  # Modèle d'embedding
 MAX_CONTEXT_CHUNKS = 3  # Nombre maximum de chunks à inclure dans le contexte
-MAX_TOKENS_PER_CHUNK = 2000  
+MAX_TOKENS_PER_CHUNK = 2000
 
 # Placeholder for additional document content
 long_text_placeholder = """
@@ -83,7 +83,7 @@ def load_documents():
     if not documents:
         st.error("Aucun document chargé avec succès.")
 
-    # Ajout du contenu textuel supplémentaire 
+    # Ajout du contenu textuel supplémentaire
     documents.append(long_text_placeholder)
 
     return documents
@@ -116,7 +116,9 @@ def generate_embeddings(texts, model):
 
 def search_relevant_chunks(question, chunks, embeddings, top_k=MAX_CONTEXT_CHUNKS):
     """Recherche les chunks les plus pertinents pour la question."""
-    question_embedding = generate_embeddings([question], get_embedding_model()).unsqueeze(0)
+    question_embedding = generate_embeddings([question], get_embedding_model())
+    # Ensure question_embedding has the same number of rows as embeddings
+    question_embedding = question_embedding.repeat(embeddings.size(0), 1)
     similarities = util.pytorch_cos_sim(question_embedding, embeddings).squeeze()
     # Obtenez les indices des chunks les plus similaires
     top_indices = similarities.argsort(descending=True)[:top_k].tolist()
@@ -181,7 +183,7 @@ def main():
         if st.button("Connexion"):
             login(username, password)
     else:
-        # Page sécurisée 
+        # Page sécurisée
         secure_page()
 
 if __name__ == "__main__":
