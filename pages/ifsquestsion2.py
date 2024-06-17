@@ -111,7 +111,7 @@ def generate_response(user_input, documents):
         messages.append({"role": "assistant", "content": doc})
 
     # Choisir un modèle Groq plus simple et moins gourmand en ressources
-    model_id = "mixtral-7b-instruct"  # Vous pouvez choisir un autre modèle
+    model_id = "mixtral-8x7b-32768"  # Vous pouvez choisir un autre modèle
 
     chat_completion = client.chat.completions.create(
         messages=messages,
