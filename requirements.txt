@@ -8,3 +8,4 @@ requests
 tiktoken
 sentence_transformers
 torch
+nltk
