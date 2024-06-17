@@ -9,3 +9,5 @@ tiktoken
 sentence_transformers
 torch
 nltk
+fuzzywuzzy
+cachetools
