@@ -3,16 +3,10 @@ import requests
 from groq import Groq
 import bcrypt
 import tiktoken
-from sentence_transformers import SentenceTransformer, util
-import torch
-from torch.nn import functional as F  # Importer functional pour normalize
+from fuzzywuzzy import fuzz
 from cachetools import TTLCache
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
 
 # Configuration
-MODEL_NAME = 'all-mpnet-base-v2'  # Modèle d'embedding
 MAX_CONTEXT_CHUNKS = 3  # Nombre maximum de chunks à inclure dans le contexte
 MAX_TOKENS_PER_CHUNK = 2000
 CACHE_TTL = 86400  # Durée de vie du cache en secondes (1 jour)
@@ -100,11 +94,6 @@ def load_documents():
     documents.append(long_text_placeholder)
     return documents
 
-@st.cache(allow_output_mutation=True, ttl=CACHE_TTL)
-def get_embedding_model():
-    """Charge le modèle d'embedding SentenceTransformer."""
-    return SentenceTransformer(MODEL_NAME)
-
 def chunk_text(text, max_tokens=MAX_TOKENS_PER_CHUNK):
     """Découpe le texte en chunks avec un nombre maximum de tokens."""
     encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
@@ -122,20 +111,6 @@ def chunk_text(text, max_tokens=MAX_TOKENS_PER_CHUNK):
         chunks.append(encoding.decode(current_chunk))
     return chunks
 
-def generate_embeddings(texts, model):
-    """Génère les embeddings pour une liste de textes."""
-    return model.encode(texts, convert_to_tensor=True)
-
-def search_relevant_chunks(question, chunks, embeddings, top_k=MAX_CONTEXT_CHUNKS):
-    """Recherche les chunks les plus pertinents pour la question."""
-    question_embedding = generate_embeddings([question], get_embedding_model())
-    # Ensure question_embedding has the same number of rows as embeddings
-    question_embedding = question_embedding.repeat(embeddings.size(0), 1)
-    similarities = util.pytorch_cos_sim(question_embedding, embeddings).squeeze()
-    # Obtenez les indices des chunks les plus similaires
-    top_indices = similarities.argsort(descending=True)[:top_k].tolist()
-    return [chunks[i] for i in top_indices]
-
 def generate_response(user_input, documents):
     """Génère une réponse à la requête de l'utilisateur."""
     client = get_groq_client()
@@ -144,27 +119,16 @@ def generate_response(user_input, documents):
     Utilisez exclusivement les informations du contexte fourni, en particulier les documents chargés, pour générer des réponses. Les réponses doivent être en français, basées uniquement sur les données fournies sans extrapolation. Aucun lien externe ou référence directe à des sources non incluses dans les documents ne doit être utilisé. Vérifiez la précision des clauses mentionnées par rapport au fichier ifsv8.txt en utilisant les autres documents comme références complémentaires.
     """
 
-    # Préparation des chunks et embeddings
-    all_chunks = []
-    all_embeddings = []
-    for doc in documents:
-        chunks = chunk_text(doc)
-        all_chunks.extend(chunks)
-        all_embeddings.extend(generate_embeddings(chunks, get_embedding_model()))
-
-    # Concaténer les embeddings en un seul tenseur
-    all_embeddings = torch.cat(all_embeddings, dim=0)
-
-    # Recherche des chunks pertinents
-    relevant_chunks = search_relevant_chunks(user_input, all_chunks, all_embeddings)
+    # Recherche des documents pertinents
+    relevant_documents = search_relevant_documents(user_input, documents)
 
     # Construction du contexte
     messages = [
         {"role": "user", "content": user_input},
         {"role": "system", "content": system_instruction}
     ]
-    for chunk in relevant_chunks:
-        messages.append({"role": "assistant", "content": chunk})
+    for _, doc in relevant_documents:
+        messages.append({"role": "assistant", "content": doc})
 
     total_tokens = 0
     for message in messages:
@@ -180,29 +144,16 @@ def generate_response(user_input, documents):
 
     return chat_completion.choices[0].message.content
 
-def prioritize_response(response, link_info):
-    """Priorise la réponse en fonction de la pertinence du lien."""
-    score = calculate_score(link_info, response)
-    if score > 0.5:
-        return response
-    else:
-        return "Désolé, je n'ai pas trouvé de réponse pertinente. Veuillez réessayer."
+def search_relevant_documents(question, documents):
+    """Recherche les documents les plus pertinents à l'aide de fuzzywuzzy."""
+    scores = []
+    for doc in documents:
+        score = fuzz.ratio(question, doc)
+        scores.append((score, doc))
 
-def calculate_score(link_info, response):
-    """Calcule un score basé sur la pertinence du lien à la question de l'utilisateur."""
-    # Normaliser le texte (tokenisation, suppression des stopwords, lemmatisation)
-    stop_words = set(stopwords.words('french'))
-    lemmatizer = WordNetLemmatizer()
-    
-    question_tokens = word_tokenize(response.lower())
-    question_tokens = [lemmatizer.lemmatize(token) for token in question_tokens if token not in stop_words]
-    
-    document_tokens = word_tokenize(link_info['paragraphs'][0].lower()) # Prendre le premier paragraphe du lien
-    document_tokens = [lemmatizer.lemmatize(token) for token in document_tokens if token not in stop_words]
-    
-    # Calculer la similarité cosinus entre les vecteurs de mots
-    similarity = util.cos_sim(question_tokens, document_tokens)
-    return similarity.item()
+    # Trier les documents par score de similarité décroissant
+    scores.sort(key=lambda x: x[0], reverse=True)
+    return scores[:MAX_CONTEXT_CHUNKS]
 
 def main():
     """Fonction principale de l'application Streamlit."""
