@@ -3,12 +3,9 @@ import requests
 from groq import Groq
 import bcrypt
 import tiktoken
-from fuzzywuzzy import fuzz
 from cachetools import TTLCache
 
 # Configuration
-MAX_CONTEXT_CHUNKS = 3  # Nombre maximum de chunks à inclure dans le contexte
-MAX_TOKENS_PER_CHUNK = 2000
 CACHE_TTL = 86400  # Durée de vie du cache en secondes (1 jour)
 
 # Placeholder pour document textuel supplémentaire
@@ -94,23 +91,6 @@ def load_documents():
     documents.append(long_text_placeholder)
     return documents
 
-def chunk_text(text, max_tokens=MAX_TOKENS_PER_CHUNK):
-    """Découpe le texte en chunks avec un nombre maximum de tokens."""
-    encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
-    tokens = encoding.encode(text)
-    chunks = []
-    current_chunk = []
-
-    for token in tokens:
-        current_chunk.append(token)
-        if len(current_chunk) >= max_tokens:
-            chunks.append(encoding.decode(current_chunk))
-            current_chunk = []
-
-    if current_chunk:
-        chunks.append(encoding.decode(current_chunk))
-    return chunks
-
 def generate_response(user_input, documents):
     """Génère une réponse à la requête de l'utilisateur."""
     client = get_groq_client()
@@ -119,23 +99,19 @@ def generate_response(user_input, documents):
     Utilisez exclusivement les informations du contexte fourni, en particulier les documents chargés, pour générer des réponses. Les réponses doivent être en français, basées uniquement sur les données fournies sans extrapolation. Aucun lien externe ou référence directe à des sources non incluses dans les documents ne doit être utilisé. Vérifiez la précision des clauses mentionnées par rapport au fichier ifsv8.txt en utilisant les autres documents comme références complémentaires.
     """
 
-    # Recherche des documents pertinents
-    relevant_documents = search_relevant_documents(user_input, documents)
+    # Trouver les documents les plus pertinents
+    relevant_documents = find_relevant_documents(user_input, documents)
 
     # Construction du contexte
     messages = [
         {"role": "user", "content": user_input},
         {"role": "system", "content": system_instruction}
     ]
-    for _, doc in relevant_documents:
+    for doc in relevant_documents:
         messages.append({"role": "assistant", "content": doc})
 
-    total_tokens = 0
-    for message in messages:
-        total_tokens += len(tiktoken.encoding_for_model("gpt-3.5-turbo").encode(message['content']))
-
-    # Choix du modèle en fonction du nombre de tokens
-    model_id = "mixtral-8x7b-32768" if total_tokens <= 32000 else "llama3-8b-8192"
+    # Choisir un modèle Groq plus simple et moins gourmand en ressources
+    model_id = "mixtral-7b-instruct"  # Vous pouvez choisir un autre modèle
 
     chat_completion = client.chat.completions.create(
         messages=messages,
@@ -144,16 +120,20 @@ def generate_response(user_input, documents):
 
     return chat_completion.choices[0].message.content
 
-def search_relevant_documents(question, documents):
-    """Recherche les documents les plus pertinents à l'aide de fuzzywuzzy."""
-    scores = []
-    for doc in documents:
-        score = fuzz.ratio(question, doc)
-        scores.append((score, doc))
+def find_relevant_documents(question, documents):
+    """Trouve les documents les plus pertinents en fonction des mots-clés."""
+    question_keywords = set(question.lower().split())  # Extraire les mots-clés de la question
+    relevant_documents = []
 
-    # Trier les documents par score de similarité décroissant
-    scores.sort(key=lambda x: x[0], reverse=True)
-    return scores[:MAX_CONTEXT_CHUNKS]
+    for doc in documents:
+        doc_keywords = set(doc.lower().split())
+        common_keywords = question_keywords.intersection(doc_keywords)
+
+        # Vérifier si le document contient au moins un mot-clé de la question
+        if common_keywords:
+            relevant_documents.append(doc)
+
+    return relevant_documents
 
 def main():
     """Fonction principale de l'application Streamlit."""
