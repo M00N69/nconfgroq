@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import pandas as pd
 import time
 
-# Load environment variables from .env file
+# Charger les variables d'environnement à partir du fichier .env
 load_dotenv()
 
 # Configuration
@@ -16,7 +16,7 @@ HUGGINGFACE_API_KEY = os.getenv('HUGGINGFACE_API_KEY')
 API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-mnli"
 
 def extract_text_from_pdf(file):
-    """Extracts text from an uploaded PDF file."""
+    """Extrait le texte d'un fichier PDF téléchargé."""
     pdf_reader = PyPDF2.PdfReader(file)
     text = ""
     for page in pdf_reader.pages:
@@ -24,7 +24,7 @@ def extract_text_from_pdf(file):
     return text
 
 def analyze_text(text, criteria):
-    """Analyzes the extracted text against the given criteria using Zero-Shot Classification."""
+    """Analyse le texte extrait par rapport aux critères donnés en utilisant la classification Zero-Shot."""
     headers = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
     
     results = []
@@ -41,22 +41,22 @@ def analyze_text(text, criteria):
             response.raise_for_status()
             result = response.json()
 
-            # Extract the label and score for this specific criterion
+            # Extraire l'étiquette et le score pour ce critère spécifique
             if isinstance(result, dict) and 'labels' in result and 'scores' in result:
-                label = result['labels'][0]
+                predicted_label = result['labels'][0]
                 score = result['scores'][0]
-                results.append((criterion, label, score))
+                results.append((criterion, predicted_label, score))
             else:
-                st.error(f"Unexpected response structure for criterion: {criterion}")
+                st.error(f"Structure de réponse inattendue pour le critère : {criterion}")
                 results.append((criterion, "Erreur", 0))
         except requests.exceptions.RequestException as e:
-            st.error(f"Error analyzing criterion: {criterion}. Error: {str(e)}")
+            st.error(f"Erreur lors de l'analyse du critère : {criterion}. Erreur : {str(e)}")
             results.append((criterion, "Erreur", 0))
     
     return results
 
 def generate_pdf_report(results):
-    """Generates a PDF report from the analysis results."""
+    """Génère un rapport PDF à partir des résultats d'analyse."""
     try:
         pdf = FPDF()
         pdf.add_page()
@@ -76,20 +76,20 @@ def generate_pdf_report(results):
             pdf.ln()
         
         pdf_output = io.BytesIO()
-        pdf.output(pdf_output)
+        pdf.output(pdf_output, 'F')  # 'F' pour les objets de type fichier
         pdf_output.seek(0)
         return pdf_output
     
     except Exception as e:
-        st.error(f"An error occurred while generating the PDF: {e}")
-        raise  # Re-raise the error for further debugging
+        st.error(f"Une erreur est survenue lors de la génération du PDF : {e}")
+        raise  # Relancer l'erreur pour un débogage plus approfondi
 
 def main():
-    """Main function to run the Streamlit app."""
+    """Fonction principale pour exécuter l'application Streamlit."""
     st.set_page_config(page_title="Analyseur de Déclaration d'Alimentarité", page_icon="🍽️", layout="wide")
     st.title("Analyseur de Déclaration d'Alimentarité")
 
-    # Define the criteria for analysis
+    # Définir les critères pour l'analyse
     criteria = [
         "0.1. Titre explicatif «Déclaration de conformité» ou autre existant",
         "0.2. Titre = «Déclaration de conformité»",
@@ -98,29 +98,29 @@ def main():
         "11.3. Indications sur des documents de validation du travail de conformité effectué par des laboratoires tiers disponibles"
     ]
 
-    # Upload PDF file
+    # Téléchargement du fichier PDF
     uploaded_file = st.file_uploader("Choisissez votre déclaration d'alimentarité (PDF)", type="pdf")
     
     if uploaded_file is not None:
-        # Extract text from the PDF
+        # Extraire le texte du PDF
         text = extract_text_from_pdf(uploaded_file)
         
-        # Analyze the text
+        # Analyser le texte
         if st.button("Analyser"):
             with st.spinner("Analyse en cours..."):
                 results = analyze_text(text, criteria)
             
-            # Display the results
+            # Afficher les résultats
             if results:
                 st.subheader("Résultats de l'analyse")
                 
-                # Create a DataFrame from the results
+                # Créer un DataFrame à partir des résultats
                 df = pd.DataFrame(results, columns=["Critère", "Résultat", "Score"])
                 
-                # Display the DataFrame
+                # Afficher le DataFrame
                 st.dataframe(df.style.format({"Score": "{:.2f}"}))
                 
-                # Generate and provide PDF report download
+                # Générer et fournir le téléchargement du rapport PDF
                 pdf_report = generate_pdf_report(results)
                 st.download_button(
                     label="Télécharger le rapport PDF",
@@ -133,4 +133,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
