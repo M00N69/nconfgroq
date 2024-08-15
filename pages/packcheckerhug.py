@@ -5,6 +5,8 @@ from fpdf import FPDF
 import io
 import os
 from dotenv import load_dotenv
+import pandas as pd
+import time
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -25,20 +27,25 @@ def analyze_text(text, criteria):
     results = []
     for criterion in criteria:
         payload = {
-            "inputs": f"Premise: {text}\nHypothesis: {criterion}",
+            "inputs": f"{text}\nHypothesis: {criterion}",
             "parameters": {"candidate_labels": ["Conforme", "Non conforme", "Partiellement conforme"]},
-            "options": {"wait_for_model": True}
         }
-        try:
-            response = requests.post(API_URL, headers=headers, json=payload)
-            response.raise_for_status()
-            result = response.json()
-            label = result['labels'][0]
-            score = result['scores'][0]
-            results.append((criterion, label, score))
-        except requests.exceptions.RequestException as e:
-            st.error(f"Error analyzing criterion: {criterion}. Error: {str(e)}")
-            results.append((criterion, "Erreur", 0))
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(API_URL, headers=headers, json=payload)
+                response.raise_for_status()
+                result = response.json()
+                label = result[0]['labels'][0]
+                score = result[0]['scores'][0]
+                results.append((criterion, label, score))
+                break
+            except requests.exceptions.RequestException as e:
+                if attempt == max_retries - 1:
+                    st.error(f"Error analyzing criterion: {criterion}. Error: {str(e)}")
+                    results.append((criterion, "Erreur", 0))
+                else:
+                    time.sleep(2)  # Wait for 2 seconds before retrying
     
     return results
 
@@ -87,18 +94,21 @@ def main():
             with st.spinner("Analyse en cours..."):
                 results = analyze_text(text, criteria)
             
-            st.subheader("Résultats de l'analyse")
-            
-            df = pd.DataFrame(results, columns=["Critère", "Résultat", "Score"])
-            st.dataframe(df.style.format({"Score": "{:.2f}"}))
-            
-            pdf_report = generate_pdf_report(results)
-            st.download_button(
-                label="Télécharger le rapport PDF",
-                data=pdf_report,
-                file_name="rapport_analyse.pdf",
-                mime="application/pdf"
-            )
+            if results:
+                st.subheader("Résultats de l'analyse")
+                
+                df = pd.DataFrame(results, columns=["Critère", "Résultat", "Score"])
+                st.dataframe(df.style.format({"Score": "{:.2f}"}))
+                
+                pdf_report = generate_pdf_report(results)
+                st.download_button(
+                    label="Télécharger le rapport PDF",
+                    data=pdf_report,
+                    file_name="rapport_analyse.pdf",
+                    mime="application/pdf"
+                )
+            else:
+                st.error("L'analyse n'a pas produit de résultats. Veuillez vérifier le contenu du PDF et réessayer.")
 
 if __name__ == "__main__":
     main()
