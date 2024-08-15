@@ -10,7 +10,7 @@ load_dotenv()  # Load environment variables from .env file
 
 # Configuration
 HUGGINGFACE_API_KEY = os.getenv('HUGGINGFACE_API_KEY')
-API_URL = "https://api-inference.huggingface.co/models/microsoft/deberta-v3-large-mnli"
+API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-mnli"
 
 def extract_text_from_pdf(file):
     pdf_reader = PyPDF2.PdfReader(file)
