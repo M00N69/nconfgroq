@@ -12,8 +12,7 @@ load_dotenv()
 
 # Configuration
 HUGGINGFACE_API_KEY = os.getenv('HUGGINGFACE_API_KEY')
-# Utiliser un autre modèle
-API_URL = "https://api-inference.huggingface.co/models/roberta-large-mnli"
+API_URL = "https://api-inference.huggingface.co/models/typeform/distilbert-base-uncased-mnli"
 
 def extract_text_from_pdf(file):
     """Extrait le texte d'un fichier PDF téléchargé."""
