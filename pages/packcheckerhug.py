@@ -12,7 +12,7 @@ load_dotenv()
 
 # Configuration
 HUGGINGFACE_API_KEY = os.getenv('HUGGINGFACE_API_KEY')
-API_URL = "https://api-inference.huggingface.co/models/typeform/distilbert-base-uncased-mnli"
+API_URL = "https://api-inference.huggingface.co/models/deepset/roberta-base-squad2"  # Use the API URL
 
 def extract_text_from_pdf(file):
     """Extrait le texte d'un fichier PDF téléchargé."""
@@ -25,33 +25,35 @@ def extract_text_from_pdf(file):
 def analyze_text(text, criteria):
     """Analyse le texte extrait par rapport aux critères donnés en utilisant la classification Zero-Shot."""
     headers = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
-    
     results = []
+
     for criterion in criteria:
-        hypothesis = f"{criterion}"
         payload = {
-            "inputs": {"premise": text, "hypothesis": hypothesis},
-            "parameters": {"candidate_labels": ["Entailment", "Neutral", "Contradiction"]}
+            "inputs": {
+                "question": criterion,  # Use "question" as input key
+                "context": text 
+            }
         }
         try:
             # Ajout d'un délai pour éviter les erreurs dues à des requêtes trop rapides
             time.sleep(2)
-            
+
             response = requests.post(API_URL, headers=headers, json=payload)
-            response.raise_for_status()
+            response.raise_for_status()  # Raise error if API call fails
             result = response.json()
 
-            # Extraire l'étiquette et le score pour ce critère spécifique
-            if isinstance(result, dict) and 'labels' in result and 'scores' in result:
-                entailment_score = result['scores'][0]
-                results.append((criterion, "Entailment" if entailment_score > 0.5 else "Contradiction", entailment_score))
-            else:
-                st.error(f"Structure de réponse inattendue pour le critère : {criterion}")
-                results.append((criterion, "Erreur", 0))
+            # Extract answer and score
+            answer = result['answer']
+            score = result['score']
+            
+            # Classify based on score (adjust threshold as needed)
+            label = "Entailment" if score > 0.5 else "Contradiction"
+            results.append((criterion, label, score))
+
         except requests.exceptions.RequestException as e:
             st.error(f"Erreur lors de l'analyse du critère : {criterion}. Erreur : {str(e)}")
             results.append((criterion, "Erreur", 0))
-    
+
     return results
 
 def generate_pdf_report(results):
@@ -136,7 +138,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
 
