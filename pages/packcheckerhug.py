@@ -34,6 +34,9 @@ def analyze_text(text, criteria):
             "parameters": {"candidate_labels": ["Entailment", "Neutral", "Contradiction"]}
         }
         try:
+            # Ajout d'un délai pour éviter les erreurs dues à des requêtes trop rapides
+            time.sleep(2)
+            
             response = requests.post(API_URL, headers=headers, json=payload)
             response.raise_for_status()
             result = response.json()
@@ -133,6 +136,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
