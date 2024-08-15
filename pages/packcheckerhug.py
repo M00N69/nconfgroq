@@ -36,54 +36,53 @@ def analyze_text(text, criteria):
                 "hypothesis_template": "This text is related to {}."
             },
         }
-        max_retries = 3
-        for attempt in range(max_retries):
-            try:
-                response = requests.post(API_URL, headers=headers, json=payload)
-                response.raise_for_status()
-                result = response.json()
+        try:
+            response = requests.post(API_URL, headers=headers, json=payload)
+            response.raise_for_status()
+            result = response.json()
 
-                # Check if the result structure is correct
-                if isinstance(result, dict) and 'labels' in result and 'scores' in result:
-                    label = result['labels'][0]
-                    score = result['scores'][0]
-                    results.append((criterion, label, score))
-                else:
-                    st.error(f"Unexpected response structure for criterion: {criterion}")
-                    results.append((criterion, "Erreur", 0))
-                break
-            except requests.exceptions.RequestException as e:
-                if attempt == max_retries - 1:
-                    st.error(f"Error analyzing criterion: {criterion}. Error: {str(e)}")
-                    results.append((criterion, "Erreur", 0))
-                else:
-                    time.sleep(2)  # Wait for 2 seconds before retrying
+            # Extract the label and score for this specific criterion
+            if isinstance(result, dict) and 'labels' in result and 'scores' in result:
+                label = result['labels'][0]
+                score = result['scores'][0]
+                results.append((criterion, label, score))
+            else:
+                st.error(f"Unexpected response structure for criterion: {criterion}")
+                results.append((criterion, "Erreur", 0))
+        except requests.exceptions.RequestException as e:
+            st.error(f"Error analyzing criterion: {criterion}. Error: {str(e)}")
+            results.append((criterion, "Erreur", 0))
     
     return results
 
 def generate_pdf_report(results):
     """Generates a PDF report from the analysis results."""
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", "B", size=16)
-    pdf.cell(200, 10, txt="Rapport d'Analyse de Déclaration d'Alimentarité", ln=1, align='C')
-    pdf.set_font("Arial", size=10)
-    
-    pdf.cell(100, 10, txt="Critère", border=1)
-    pdf.cell(50, 10, txt="Résultat", border=1)
-    pdf.cell(40, 10, txt="Score", border=1)
-    pdf.ln()
-    
-    for criterion, label, score in results:
-        pdf.multi_cell(100, 10, txt=criterion, border=1)
-        pdf.cell(50, 10, txt=label, border=1)
-        pdf.cell(40, 10, txt=f"{score:.2f}", border=1)
+    try:
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", "B", size=16)
+        pdf.cell(200, 10, txt="Rapport d'Analyse de Déclaration d'Alimentarité", ln=1, align='C')
+        pdf.set_font("Arial", size=10)
+        
+        pdf.cell(100, 10, txt="Critère", border=1)
+        pdf.cell(50, 10, txt="Résultat", border=1)
+        pdf.cell(40, 10, txt="Score", border=1)
         pdf.ln()
+        
+        for criterion, label, score in results:
+            pdf.multi_cell(100, 10, txt=criterion, border=1)
+            pdf.cell(50, 10, txt=label, border=1)
+            pdf.cell(40, 10, txt=f"{score:.2f}", border=1)
+            pdf.ln()
+        
+        pdf_output = io.BytesIO()
+        pdf.output(pdf_output)
+        pdf_output.seek(0)
+        return pdf_output
     
-    pdf_output = io.BytesIO()
-    pdf.output(pdf_output)
-    pdf_output.seek(0)
-    return pdf_output
+    except Exception as e:
+        st.error(f"An error occurred while generating the PDF: {e}")
+        raise  # Re-raise the error for further debugging
 
 def main():
     """Main function to run the Streamlit app."""
@@ -96,7 +95,6 @@ def main():
         "0.2. Titre = «Déclaration de conformité»",
         "1.1. L'identité et l'adresse de l'émetteur sont indiquées",
         "1.2. L'identité et l'adresse du destinataire sont indiquées",
-        # Add all other criteria here
         "11.3. Indications sur des documents de validation du travail de conformité effectué par des laboratoires tiers disponibles"
     ]
 
@@ -116,7 +114,10 @@ def main():
             if results:
                 st.subheader("Résultats de l'analyse")
                 
+                # Create a DataFrame from the results
                 df = pd.DataFrame(results, columns=["Critère", "Résultat", "Score"])
+                
+                # Display the DataFrame
                 st.dataframe(df.style.format({"Score": "{:.2f}"}))
                 
                 # Generate and provide PDF report download
@@ -132,3 +133,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
