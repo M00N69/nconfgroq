@@ -12,7 +12,8 @@ load_dotenv()
 
 # Configuration
 HUGGINGFACE_API_KEY = os.getenv('HUGGINGFACE_API_KEY')
-API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-mnli"
+# Utiliser un autre modèle
+API_URL = "https://api-inference.huggingface.co/models/roberta-large-mnli"
 
 def extract_text_from_pdf(file):
     """Extrait le texte d'un fichier PDF téléchargé."""
@@ -136,6 +137,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
