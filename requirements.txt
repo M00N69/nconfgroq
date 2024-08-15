@@ -11,3 +11,7 @@ torch
 nltk
 fuzzywuzzy
 cachetools
+PyPDF2
+fpdf
+python-dotenv
+pandas
