@@ -102,11 +102,11 @@ def main():
 
     # Définir les critères pour l'analyse
     criteria = [
-        "Le titre indique clairement qu'il s'agit d'une Déclaration de conformité",
-        "L'identité et l'adresse de l'émetteur sont indiquées",
-        "L'identité et l'adresse du destinataire sont indiquées",
-        "Des documents de validation du travail de conformité sont fournis"
-    ]
+    "Dans le titre de ce document, y a-t-il une mention explicite de 'Déclaration de conformité' ? Explique ta réponse en te basant sur le titre du document.",
+    "Quel est le nom et l'adresse du fabricant ou de l'émetteur de cette déclaration de conformité ? Donne les informations complètes si disponibles.",
+    "Quelle est l'identité et l'adresse du destinataire de cette déclaration de conformité ? S'il n'y a pas d'adresse, indique 'Non disponible'.",
+    "Trouve-t-on une section dans le document qui liste les documents de validation du travail de conformité ? Si oui, cite les documents mentionnés."
+]
 
     # Téléchargement du fichier PDF
     uploaded_file = st.file_uploader("Choisissez votre déclaration d'alimentarité (PDF)", type="pdf")
