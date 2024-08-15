@@ -28,12 +28,10 @@ def analyze_text(text, criteria):
     
     results = []
     for criterion in criteria:
+        hypothesis = f"{criterion}"
         payload = {
-            "inputs": text,
-            "parameters": {
-                "candidate_labels": [criterion],
-                "hypothesis_template": "This text is related to {}."
-            },
+            "inputs": {"premise": text, "hypothesis": hypothesis},
+            "parameters": {"candidate_labels": ["Entailment", "Neutral", "Contradiction"]}
         }
         try:
             response = requests.post(API_URL, headers=headers, json=payload)
@@ -42,9 +40,8 @@ def analyze_text(text, criteria):
 
             # Extraire l'étiquette et le score pour ce critère spécifique
             if isinstance(result, dict) and 'labels' in result and 'scores' in result:
-                predicted_label = result['labels'][0]
-                score = result['scores'][0]
-                results.append((criterion, predicted_label, score))
+                entailment_score = result['scores'][0]
+                results.append((criterion, "Entailment" if entailment_score > 0.5 else "Contradiction", entailment_score))
             else:
                 st.error(f"Structure de réponse inattendue pour le critère : {criterion}")
                 results.append((criterion, "Erreur", 0))
@@ -100,11 +97,10 @@ def main():
 
     # Définir les critères pour l'analyse
     criteria = [
-        "0.1. Titre explicatif «Déclaration de conformité» ou autre existant",
-        "0.2. Titre = «Déclaration de conformité»",
-        "1.1. L'identité et l'adresse de l'émetteur sont indiquées",
-        "1.2. L'identité et l'adresse du destinataire sont indiquées",
-        "11.3. Indications sur des documents de validation du travail de conformité effectué par des laboratoires tiers disponibles"
+        "Le titre indique clairement qu'il s'agit d'une Déclaration de conformité",
+        "L'identité et l'adresse de l'émetteur sont indiquées",
+        "L'identité et l'adresse du destinataire sont indiquées",
+        "Des documents de validation du travail de conformité sont fournis"
     ]
 
     # Téléchargement du fichier PDF
@@ -137,5 +133,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
