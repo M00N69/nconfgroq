@@ -5,7 +5,6 @@ from fpdf import FPDF
 import io
 import os
 from dotenv import load_dotenv
-import pandas as pd
 import time
 
 # Charger les variables d'environnement à partir du fichier .env
@@ -70,19 +69,29 @@ def generate_pdf_report(results):
         pdf.ln()
         
         for criterion, label, score in results:
-            pdf.multi_cell(100, 10, txt=criterion, border=1)
+            pdf.cell(100, 10, txt=criterion, border=1)
             pdf.cell(50, 10, txt=label, border=1)
             pdf.cell(40, 10, txt=f"{score:.2f}", border=1)
             pdf.ln()
         
         pdf_output = io.BytesIO()
-        pdf.output(pdf_output, 'F')  # 'F' pour les objets de type fichier
+        pdf.output(pdf_output, 'S').encode('latin1')  # Sauvegarder dans BytesIO
         pdf_output.seek(0)
         return pdf_output
     
     except Exception as e:
         st.error(f"Une erreur est survenue lors de la génération du PDF : {e}")
         raise  # Relancer l'erreur pour un débogage plus approfondi
+
+def display_results_table(results):
+    """Affiche les résultats sous forme de tableau formaté."""
+    table_md = "| **Critère** | **Résultat** | **Score** |\n"
+    table_md += "|-------------|--------------|-----------|\n"
+    
+    for criterion, label, score in results:
+        table_md += f"| {criterion} | {label} | {score:.2f} |\n"
+    
+    st.markdown(table_md)
 
 def main():
     """Fonction principale pour exécuter l'application Streamlit."""
@@ -110,15 +119,10 @@ def main():
             with st.spinner("Analyse en cours..."):
                 results = analyze_text(text, criteria)
             
-            # Afficher les résultats
+            # Afficher les résultats sous forme de tableau
             if results:
                 st.subheader("Résultats de l'analyse")
-                
-                # Créer un DataFrame à partir des résultats
-                df = pd.DataFrame(results, columns=["Critère", "Résultat", "Score"])
-                
-                # Afficher le DataFrame
-                st.dataframe(df.style.format({"Score": "{:.2f}"}))
+                display_results_table(results)
                 
                 # Générer et fournir le téléchargement du rapport PDF
                 pdf_report = generate_pdf_report(results)
