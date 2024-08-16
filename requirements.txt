@@ -16,3 +16,6 @@ fpdf
 python-dotenv
 pandas
 crewai
+embedchain
+chromadb
+numpy
