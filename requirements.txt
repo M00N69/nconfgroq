@@ -15,7 +15,7 @@ PyPDF2
 fpdf
 python-dotenv
 pandas
-crewai==0.1.1
-embedchain==0.0.9
-chromadb==0.3.22
-numpy==1.25.2
+crewai
+embedchain
+chromadb
+numpy
