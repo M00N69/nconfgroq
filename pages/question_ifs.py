@@ -100,18 +100,11 @@ def secure_page():
     df = load_csv_data(CSV_URL)
 
     if df is not None:
-        st.write("Base de données IFSv8 chargée:")
-        st.dataframe(df)
-
-        # Afficher les noms des colonnes pour le débogage
-        st.write("Noms des colonnes disponibles dans le CSV:")
-        st.write(df.columns.tolist())
-
         # Get user input
         question = st.text_input("Posez votre question:")
 
         if question:
-            with st.spinner("Identification du thème et recherche dans la base de données..."):
+            with st.spinner("Génération de la réponse en cours..."):
                 themes = identify_theme_without_nltk(question)
                 
                 # Vérifier si la colonne 'IFS Requirements' existe
@@ -119,10 +112,6 @@ def secure_page():
                     st.error("La colonne 'IFS Requirements' n'existe pas dans le fichier CSV.")
                 else:
                     context_snippets = find_context_in_csv(themes, df)
-                    
-                    st.write("Contextes trouvés dans la base de données:")
-                    for snippet in context_snippets:
-                        st.write(snippet)
 
                     if context_snippets:
                         # Initialize Groq client
@@ -130,7 +119,7 @@ def secure_page():
 
                         # Generate the response using Groq API
                         response = generate_response_with_groq(client, question, context_snippets)
-                        st.write("Réponse générée par Groq:")
+                        st.write("Réponse:")
                         st.write(response)
                     else:
                         st.warning("Aucun contexte pertinent trouvé pour les thèmes extraits.")
