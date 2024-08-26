@@ -2,15 +2,9 @@ import streamlit as st
 import requests
 from groq import Groq
 import bcrypt
-import tiktoken
-from sentence_transformers import SentenceTransformer, util
-import torch
-from torch.nn import functional as F  # Importer functional pour normalize
 
 # Configuration
-MODEL_NAME = 'all-mpnet-base-v2'  # Modèle d'embedding
-MAX_CONTEXT_CHUNKS = 3  # Nombre maximum de chunks à inclure dans le contexte
-MAX_TOKENS_PER_CHUNK = 2000
+MAX_CONTEXT_RADIUS = 200  # Nombre de caractères autour du mot clé pour le contexte
 
 # Placeholder for additional document content
 long_text_placeholder = """
@@ -59,7 +53,6 @@ def secure_page():
                     st.write(response)
         else:
             st.error("Échec du chargement des documents, impossible de continuer.")
-
     else:
         st.warning("Veuillez vous connecter pour accéder à cette page.")
 
@@ -86,87 +79,47 @@ def load_documents():
     # Ajout du contenu textuel supplémentaire
     documents.append(long_text_placeholder)
 
-    return documents
+    return "\n".join(documents)  # Retourner un seul texte combiné
 
-@st.cache(allow_output_mutation=True, ttl=86400)
-def get_embedding_model():
-    """Charge le modèle d'embedding SentenceTransformer."""
-    return SentenceTransformer(MODEL_NAME)
+def extract_keywords_from_groq(client, user_input):
+    """Utilise l'API Groq pour extraire les mots clés de la question de l'utilisateur."""
+    response = client.keywords.extract(text=user_input)
+    return response['keywords']
 
-def chunk_text(text, max_tokens=MAX_TOKENS_PER_CHUNK):
-    """Découpe le texte en chunks avec un nombre maximum de tokens."""
-    encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
-    tokens = encoding.encode(text)
-    chunks = []
-    current_chunk = []
-
-    for token in tokens:
-        current_chunk.append(token)
-        if len(current_chunk) >= max_tokens:
-            chunks.append(encoding.decode(current_chunk))
-            current_chunk = []
-
-    if current_chunk:
-        chunks.append(encoding.decode(current_chunk))
-    return chunks
-
-def generate_embeddings(texts, model):
-    """Génère les embeddings pour une liste de textes."""
-    return model.encode(texts, convert_to_tensor=True)
-
-def search_relevant_chunks(question, chunks, embeddings, top_k=MAX_CONTEXT_CHUNKS):
-    """Recherche les chunks les plus pertinents pour la question."""
-    question_embedding = generate_embeddings([question], get_embedding_model())
-    # Ensure question_embedding has the same number of rows as embeddings
-    question_embedding = question_embedding.repeat(embeddings.size(0), 1)
-    similarities = util.pytorch_cos_sim(question_embedding, embeddings).squeeze()
-    # Obtenez les indices des chunks les plus similaires
-    top_indices = similarities.argsort(descending=True)[:top_k].tolist()
-    return [chunks[i] for i in top_indices]
+def find_context_in_documents(documents, keywords):
+    """Trouve le contexte autour des mots clés dans le document."""
+    context_snippets = []
+    for keyword in keywords:
+        start_idx = documents.lower().find(keyword.lower())
+        if start_idx != -1:
+            start = max(0, start_idx - MAX_CONTEXT_RADIUS)
+            end = min(len(documents), start_idx + len(keyword) + MAX_CONTEXT_RADIUS)
+            context_snippets.append(documents[start:end])
+    return context_snippets
 
 def generate_response(user_input, documents):
     """Génère une réponse à la requête de l'utilisateur."""
     client = get_groq_client()
 
-    system_instruction = """
-    Utilisez exclusivement les informations du contexte fourni, en particulier les documents chargés, pour générer des réponses. Les réponses doivent être en français, basées uniquement sur les données fournies sans extrapolation. Aucun lien externe ou référence directe à des sources non incluses dans les documents ne doit être utilisé. Vérifiez la précision des clauses mentionnées par rapport au fichier ifsv8.txt en utilisant les autres documents comme références complémentaires.
-    """
-
-     # Préparation des chunks et embeddings
-    all_chunks = []
-    all_embeddings = []
-    for doc in documents:
-        chunks = chunk_text(doc)
-        all_chunks.extend(chunks)
-        all_embeddings.extend(generate_embeddings(chunks, get_embedding_model()))
-
-    # Concaténer les embeddings en un seul tenseur
-    all_embeddings = torch.cat(all_embeddings, dim=0)
-
-    # Recherche des chunks pertinents
-    relevant_chunks = search_relevant_chunks(user_input, all_chunks, all_embeddings)
-
-    # Construction du contexte
-    messages = [
-        {"role": "user", "content": user_input},
-        {"role": "system", "content": system_instruction}
-    ]
-    for chunk in relevant_chunks:
-        messages.append({"role": "assistant", "content": chunk})
-
-    total_tokens = 0
-    for message in messages:
-        total_tokens += len(tiktoken.encoding_for_model("gpt-3.5-turbo").encode(message['content']))
-
-    # Choix du modèle en fonction du nombre de tokens
-    model_id = "llama-3.1-8b-instant" if total_tokens <= 32000 else "llama-3.1-70b-versatile"
-
-    chat_completion = client.chat.completions.create(
-        messages=messages,
-        model=model_id
-    )
-
-    return chat_completion.choices[0].message.content
+    # Étape 1 : Extraire les mots clés
+    keywords = extract_keywords_from_groq(client, user_input)
+    
+    # Étape 2 : Rechercher les mots clés dans les documents
+    context_snippets = find_context_in_documents(documents, keywords)
+    
+    # Étape 3 : Demander à Groq de générer une réponse basée sur le contexte trouvé
+    if context_snippets:
+        combined_context = "\n".join(context_snippets)
+        response = client.chat.completions.create(
+            messages=[
+                {"role": "user", "content": user_input},
+                {"role": "system", "content": combined_context}
+            ],
+            model="llama-3.1-8b-instant"  # Choisir un modèle adapté à la taille du contexte
+        )
+        return response.choices[0].message.content
+    else:
+        return "Aucun contexte pertinent trouvé pour les mots clés extraits."
 
 def main():
     """Fonction principale de l'application Streamlit."""
