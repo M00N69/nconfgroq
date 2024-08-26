@@ -7,6 +7,7 @@ from collections import Counter
 from groq import Groq
 import bcrypt
 
+# Télécharger les ressources NLTK nécessaires
 nltk.download('punkt')
 nltk.download('stopwords')
 
