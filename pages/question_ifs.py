@@ -1,18 +1,14 @@
 import streamlit as st
 import pandas as pd
-import nltk
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
 from collections import Counter
 from groq import Groq
 import bcrypt
 
-# Télécharger les ressources NLTK nécessaires
-nltk.download('punkt')
-nltk.download('stopwords')
-
 # URL of the CSV file from GitHub
 CSV_URL = "https://raw.githubusercontent.com/M00N69/Action-planGroq/main/Guide%20Checklist_IFS%20Food%20V%208%20-%20CHECKLIST.csv"
+
+# Liste simple de mots vides (à adapter selon vos besoins)
+STOPWORDS = set(["a", "and", "the", "is", "in", "it", "of", "for", "on", "with", "as", "to", "at", "by"])
 
 @st.cache(allow_output_mutation=True)
 def load_csv_data(url):
@@ -24,11 +20,13 @@ def load_csv_data(url):
         st.error(f"Erreur lors du chargement des données CSV: {str(e)}")
         return None
 
-def identify_theme_with_nltk(question, top_n=5):
-    """Identify main themes using NLTK."""
-    # Tokenize and remove stopwords
-    words = word_tokenize(question.lower())
-    filtered_words = [word for word in words if word.isalnum() and word not in stopwords.words('english')]
+def identify_theme_without_nltk(question, top_n=5):
+    """Identify main themes without using NLTK."""
+    # Tokenize by splitting the string by spaces
+    words = question.lower().split()
+    
+    # Remove stopwords
+    filtered_words = [word for word in words if word.isalnum() and word not in STOPWORDS]
     
     # Count word frequencies
     word_counts = Counter(filtered_words)
@@ -93,7 +91,7 @@ def secure_page():
 
         if question:
             with st.spinner("Identification du thème et recherche dans la base de données..."):
-                themes = identify_theme_with_nltk(question)
+                themes = identify_theme_without_nltk(question)
                 context_snippets = find_context_in_csv(themes, df)
                 
                 st.write("Contextes trouvés dans la base de données:")
