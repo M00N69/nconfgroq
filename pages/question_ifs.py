@@ -38,8 +38,8 @@ def identify_theme_without_nltk(question, top_n=5):
 
 def find_context_in_csv(themes, df):
     """Find relevant rows in the CSV based on identified themes."""
-    # Search the "IFS Requirement" column for any of the themes
-    matching_rows = df[df['IFS Requirement'].apply(lambda x: any(theme.lower() in str(x).lower() for theme in themes))]
+    # Search the "IFS Requirements" column for any of the themes
+    matching_rows = df[df['IFS Requirements'].apply(lambda x: any(theme.lower() in str(x).lower() for theme in themes))]
     return matching_rows
 
 def get_groq_client():
@@ -137,4 +137,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
