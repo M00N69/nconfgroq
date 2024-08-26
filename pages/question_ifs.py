@@ -1,14 +1,17 @@
 import streamlit as st
 import pandas as pd
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from collections import Counter
 from groq import Groq
 import bcrypt
-import spacy
+
+nltk.download('punkt')
+nltk.download('stopwords')
 
 # URL of the CSV file from GitHub
 CSV_URL = "https://raw.githubusercontent.com/M00N69/Action-planGroq/main/Guide%20Checklist_IFS%20Food%20V%208%20-%20CHECKLIST.csv"
-
-# Load the spaCy model for NLP processing
-nlp = spacy.load("en_core_web_sm")
 
 @st.cache(allow_output_mutation=True)
 def load_csv_data(url):
@@ -20,12 +23,19 @@ def load_csv_data(url):
         st.error(f"Erreur lors du chargement des données CSV: {str(e)}")
         return None
 
-def identify_theme(question):
-    """Identify the main theme of the question using spaCy."""
-    doc = nlp(question)
-    # Extract the main nouns and proper nouns as potential themes
-    themes = [chunk.text for chunk in doc.noun_chunks]
-    return themes
+def identify_theme_with_nltk(question, top_n=5):
+    """Identify main themes using NLTK."""
+    # Tokenize and remove stopwords
+    words = word_tokenize(question.lower())
+    filtered_words = [word for word in words if word.isalnum() and word not in stopwords.words('english')]
+    
+    # Count word frequencies
+    word_counts = Counter(filtered_words)
+    
+    # Get the top N keywords
+    keywords = [word for word, count in word_counts.most_common(top_n)]
+    
+    return keywords
 
 def find_context_in_csv(themes, df):
     """Find relevant rows in the CSV based on identified themes."""
@@ -82,7 +92,7 @@ def secure_page():
 
         if question:
             with st.spinner("Identification du thème et recherche dans la base de données..."):
-                themes = identify_theme(question)
+                themes = identify_theme_with_nltk(question)
                 context_snippets = find_context_in_csv(themes, df)
                 
                 st.write("Contextes trouvés dans la base de données:")
