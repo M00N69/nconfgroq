@@ -159,7 +159,7 @@ def generate_response(user_input, documents):
         total_tokens += len(tiktoken.encoding_for_model("gpt-3.5-turbo").encode(message['content']))
 
     # Choix du modèle en fonction du nombre de tokens
-    model_id = "mixtral-8x7b-32768" if total_tokens <= 32000 else "llama3-8b-8192"
+    model_id = "llama-3.1-8b-instant" if total_tokens <= 32000 else "llama-3.1-70b-versatile"
 
     chat_completion = client.chat.completions.create(
         messages=messages,
