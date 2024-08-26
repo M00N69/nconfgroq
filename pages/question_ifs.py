@@ -2,9 +2,13 @@ import streamlit as st
 import pandas as pd
 from groq import Groq
 import bcrypt
+import spacy
 
 # URL of the CSV file from GitHub
 CSV_URL = "https://raw.githubusercontent.com/M00N69/Action-planGroq/main/Guide%20Checklist_IFS%20Food%20V%208%20-%20CHECKLIST.csv"
+
+# Load the spaCy model for NLP processing
+nlp = spacy.load("en_core_web_sm")
 
 @st.cache(allow_output_mutation=True)
 def load_csv_data(url):
@@ -16,11 +20,18 @@ def load_csv_data(url):
         st.error(f"Erreur lors du chargement des données CSV: {str(e)}")
         return None
 
-def find_context_in_csv(question, df):
-    """Find relevant rows in the CSV based on keywords from the question."""
-    question_lower = question.lower()
-    results = df[df.apply(lambda row: row.astype(str).str.contains(question_lower, na=False), axis=1)]
-    return results
+def identify_theme(question):
+    """Identify the main theme of the question using spaCy."""
+    doc = nlp(question)
+    # Extract the main nouns and proper nouns as potential themes
+    themes = [chunk.text for chunk in doc.noun_chunks]
+    return themes
+
+def find_context_in_csv(themes, df):
+    """Find relevant rows in the CSV based on identified themes."""
+    # Search the "IFS Requirement" column for any of the themes
+    matching_rows = df[df['IFS Requirement'].apply(lambda x: any(theme.lower() in str(x).lower() for theme in themes))]
+    return matching_rows
 
 def get_groq_client():
     """Initialize and return a Groq client with the API key."""
@@ -70,8 +81,9 @@ def secure_page():
         question = st.text_input("Posez votre question:")
 
         if question:
-            with st.spinner("Recherche des éléments correspondants..."):
-                context_snippets = find_context_in_csv(question, df)
+            with st.spinner("Identification du thème et recherche dans la base de données..."):
+                themes = identify_theme(question)
+                context_snippets = find_context_in_csv(themes, df)
                 
                 st.write("Contextes trouvés dans la base de données:")
                 st.dataframe(context_snippets)
@@ -85,7 +97,7 @@ def secure_page():
                     st.write("Réponse générée par Groq:")
                     st.write(response)
                 else:
-                    st.warning("Aucun contexte pertinent trouvé pour les mots clés extraits.")
+                    st.warning("Aucun contexte pertinent trouvé pour les thèmes extraits.")
     else:
         st.error("Impossible de charger la base de données CSV.")
 
