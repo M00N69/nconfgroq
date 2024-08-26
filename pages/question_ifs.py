@@ -37,10 +37,21 @@ def identify_theme_without_nltk(question, top_n=5):
     return keywords
 
 def find_context_in_csv(themes, df):
-    """Find relevant rows in the CSV based on identified themes."""
+    """Find relevant rows in the CSV based on identified themes and extract relevant context."""
     # Search the "IFS Requirements" column for any of the themes
     matching_rows = df[df['IFS Requirements'].apply(lambda x: any(theme.lower() in str(x).lower() for theme in themes))]
-    return matching_rows
+    
+    # Extract relevant context from the matching rows
+    context_snippets = []
+    for _, row in matching_rows.iterrows():
+        context = {
+            "IFS Requirement": row['IFS Requirements'],
+            "Good practice": row['Good practice'],
+            "Example questions": row['Example questions'],
+            "Elements to check": row['Elements to check']
+        }
+        context_snippets.append(context)
+    return context_snippets
 
 def get_groq_client():
     """Initialize and return a Groq client with the API key."""
@@ -48,8 +59,14 @@ def get_groq_client():
 
 def generate_response_with_groq(client, question, context_snippets):
     """Generate a response using the Groq API based on the context from the CSV."""
-    if not context_snippets.empty:
-        combined_context = context_snippets.to_string(index=False)
+    if context_snippets:
+        combined_context = "\n\n".join(
+            f"IFS Requirement: {snippet['IFS Requirement']}\n"
+            f"Good practice: {snippet['Good practice']}\n"
+            f"Example questions: {snippet['Example questions']}\n"
+            f"Elements to check: {snippet['Elements to check']}"
+            for snippet in context_snippets
+        )
         response = client.chat.completions.create(
             messages=[
                 {"role": "user", "content": question},
@@ -104,9 +121,10 @@ def secure_page():
                     context_snippets = find_context_in_csv(themes, df)
                     
                     st.write("Contextes trouvés dans la base de données:")
-                    st.dataframe(context_snippets)
+                    for snippet in context_snippets:
+                        st.write(snippet)
 
-                    if not context_snippets.empty:
+                    if context_snippets:
                         # Initialize Groq client
                         client = get_groq_client()
 
@@ -137,5 +155,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
