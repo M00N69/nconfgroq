@@ -86,27 +86,36 @@ def secure_page():
         st.write("Base de données IFSv8 chargée:")
         st.dataframe(df)
 
+        # Afficher les noms des colonnes pour le débogage
+        st.write("Noms des colonnes disponibles dans le CSV:")
+        st.write(df.columns.tolist())
+
         # Get user input
         question = st.text_input("Posez votre question:")
 
         if question:
             with st.spinner("Identification du thème et recherche dans la base de données..."):
                 themes = identify_theme_without_nltk(question)
-                context_snippets = find_context_in_csv(themes, df)
                 
-                st.write("Contextes trouvés dans la base de données:")
-                st.dataframe(context_snippets)
-
-                if not context_snippets.empty:
-                    # Initialize Groq client
-                    client = get_groq_client()
-
-                    # Generate the response using Groq API
-                    response = generate_response_with_groq(client, question, context_snippets)
-                    st.write("Réponse générée par Groq:")
-                    st.write(response)
+                # Vérifier si la colonne 'IFS Requirements' existe
+                if 'IFS Requirements' not in df.columns:
+                    st.error("La colonne 'IFS Requirements' n'existe pas dans le fichier CSV.")
                 else:
-                    st.warning("Aucun contexte pertinent trouvé pour les thèmes extraits.")
+                    context_snippets = find_context_in_csv(themes, df)
+                    
+                    st.write("Contextes trouvés dans la base de données:")
+                    st.dataframe(context_snippets)
+
+                    if not context_snippets.empty:
+                        # Initialize Groq client
+                        client = get_groq_client()
+
+                        # Generate the response using Groq API
+                        response = generate_response_with_groq(client, question, context_snippets)
+                        st.write("Réponse générée par Groq:")
+                        st.write(response)
+                    else:
+                        st.warning("Aucun contexte pertinent trouvé pour les thèmes extraits.")
     else:
         st.error("Impossible de charger la base de données CSV.")
 
