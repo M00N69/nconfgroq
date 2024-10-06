@@ -19,7 +19,7 @@ def add_custom_css():
             font-size: 14px;
         }
         .custom-question {
-            font-size: 14px;
+            font-size: 18px;
             font-weight: bold;
             color: #333;
         }
