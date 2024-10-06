@@ -21,7 +21,7 @@ def add_custom_css():
         .custom-question {
             font-size: 18px;  /* Augmentation de la taille de la police pour les questions */
             font-weight: bold;
-            color: #333;
+            color: #254699;
         }
         </style>
         """, unsafe_allow_html=True)
