@@ -3,7 +3,7 @@ import requests
 from pocketgroq import GroqProvider
 import base64
 
-# CSS pour personnaliser le style de l'application
+# CSS pour personnaliser le style de l'application, incluant une plus grande police pour les questions
 def add_custom_css():
     st.markdown("""
         <style>
@@ -12,14 +12,14 @@ def add_custom_css():
             margin: 0 auto;
         }
         .stTextInput label {
-            font-size: 28px;
+            font-size: 16px;
             font-weight: bold;
         }
         .stTextInput input {
-            font-size: 20px;
+            font-size: 14px;
         }
         .custom-question {
-            font-size: 28px;
+            font-size: 18px;  /* Augmentation de la taille de la police pour les questions */
             font-weight: bold;
             color: #333;
         }
@@ -48,6 +48,19 @@ def ask_groq_for_questions(prompt: str):
     questions = response.split('\n')
     filtered_questions = [q.strip() for q in questions if '?' in q]
     return filtered_questions[:5]  # Limiter à 5 questions
+
+# Correspondance entre les causes et les actions proposées
+def get_action_for_cause(cause: str):
+    """Retourner l'action proposée en fonction de la cause identifiée."""
+    cause_action_mapping = {
+        "Manque de formation": {"Action Proposée": "Organiser une formation sur les bonnes pratiques", "Gravité": 8, "Probabilité": 7, "Priorité": "Haute"},
+        "Processus mal défini": {"Action Proposée": "Mettre à jour les SOPs et effectuer des audits réguliers", "Gravité": 9, "Probabilité": 6, "Priorité": "Très Haute"},
+        "Communication insuffisante": {"Action Proposée": "Améliorer la communication entre les équipes et les services", "Gravité": 6, "Probabilité": 5, "Priorité": "Moyenne"},
+        # Ajoutez ici d'autres causes et actions selon le contexte spécifique
+    }
+    
+    # Retourner l'action si la cause est connue, sinon une action par défaut
+    return cause_action_mapping.get(cause, {"Action Proposée": "Action à déterminer", "Gravité": 5, "Probabilité": 5, "Priorité": "Moyenne"})
 
 # Ask Groq for root cause analysis and recommendations
 def ask_groq_for_analysis(problem_description: str, answers: list):
@@ -99,7 +112,8 @@ def main():
     if 'questions' in st.session_state:
         st.write("Répondez aux questions ci-dessous pour affiner l'analyse :")
         for i, question in enumerate(st.session_state.questions):
-            answer = st.text_input(f"Question {i+1}: {question}", key=f"answer_{i}")
+            st.markdown(f"<p class='custom-question'>Question {i+1}: {question}</p>", unsafe_allow_html=True)  # Appliquer la classe custom-question pour une police plus grande
+            answer = st.text_input(f"Réponse à la Question {i+1}", key=f"answer_{i}")
             if answer and len(st.session_state.answers) == i:
                 st.session_state.answers.append(answer)
 
@@ -111,12 +125,18 @@ def main():
                 st.write("### Analyse des causes racines et Plan d'action")
                 st.write(analysis_response)
 
-                # Step 4: Action Plan and download option
-                causes_and_actions = [
-                    {"Cause": "Manque de formation", "Action Proposée": "Organiser une formation sur les bonnes pratiques", "Gravité": 8, "Probabilité": 7, "Priorité": "Haute"},
-                    {"Cause": "Processus mal défini", "Action Proposée": "Mettre à jour les SOPs et effectuer des audits réguliers", "Gravité": 9, "Probabilité": 6, "Priorité": "Très Haute"},
-                    {"Cause": "Communication insuffisante", "Action Proposée": "Améliorer la communication entre les équipes et les services", "Gravité": 6, "Probabilité": 5, "Priorité": "Moyenne"}
-                ]
+                # Générer dynamiquement le plan d'actions basé sur les causes identifiées
+                causes_identified = ["Manque de formation", "Processus mal défini"]  # Exemple de causes identifiées
+                causes_and_actions = []
+                for cause in causes_identified:
+                    action = get_action_for_cause(cause)
+                    causes_and_actions.append({
+                        "Cause": cause,
+                        "Action Proposée": action["Action Proposée"],
+                        "Gravité": action["Gravité"],
+                        "Probabilité": action["Probabilité"],
+                        "Priorité": action["Priorité"]
+                    })
 
                 st.table(causes_and_actions)
 
