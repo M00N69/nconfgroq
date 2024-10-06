@@ -16,10 +16,10 @@ def add_custom_css():
             font-weight: bold;
         }
         .stTextInput input {
-            font-size: 14px;
+            font-size: 20px;
         }
         .custom-question {
-            font-size: 18px;
+            font-size: 28px;
             font-weight: bold;
             color: #333;
         }
