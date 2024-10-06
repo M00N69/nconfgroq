@@ -20,3 +20,4 @@ embedchain
 chromadb
 numpy
 nltk
+pocketgroq
