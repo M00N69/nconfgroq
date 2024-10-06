@@ -1,11 +1,11 @@
 import streamlit as st
 import requests
-from pocketgroq import GroqProvider  # Remplacer l'importation par GroqProvider
+from pocketgroq import GroqProvider
 
 # Initialize Groq Client
 def get_groq_client():
     """Initialize and return a Groq client with the API key."""
-    return GroqProvider(api_key=st.secrets["GROQ_API_KEY"])  # Utiliser GroqProvider ici
+    return GroqProvider(api_key=st.secrets["GROQ_API_KEY"])
 
 # Fetch available models from Groq API
 def fetch_available_models():
@@ -19,7 +19,7 @@ def fetch_available_models():
     models = response.json().get('data', [])
     return [model['id'] for model in models]
 
-# Generate food safety-specific questions
+# Generate standard food safety-specific questions
 def get_food_safety_questions():
     """Return a list of standard questions related to food safety for root cause analysis."""
     return [
@@ -32,9 +32,24 @@ def get_food_safety_questions():
 
 # Ask Groq to generate questions based on user's input
 def ask_groq_for_questions(prompt: str, model: str):
-    """Generate additional questions using the Groq model."""
+    """Generate context-specific questions dynamically using the Groq model."""
     groq_client = get_groq_client()
-    return groq_client.generate(f"Génère des questions supplémentaires pour affiner l'analyse de la situation suivante : {prompt}", model=model, temperature=0.5, max_tokens=500)
+    # Formuler la requête pour le modèle Groq
+    request_prompt = (
+        f"L'utilisateur a décrit le problème suivant : {prompt}. "
+        f"Génère des questions spécifiques pour analyser et comprendre plus en détail ce problème."
+    )
+    # Appel à l'API Groq pour générer les questions
+    response = groq_client.generate(
+        prompt=request_prompt,
+        model=model,
+        temperature=0.5,  # Ajuste la créativité de la génération
+        max_tokens=500
+    )
+    
+    # On suppose que le modèle renvoie une liste de questions dans le texte de la réponse
+    questions = response.split('\n')  # Diviser la réponse par lignes pour obtenir les questions
+    return [question for question in questions if question]  # Filtrer les lignes vides
 
 # Ask Groq for root cause analysis and recommendations
 def ask_groq_for_analysis(problem_description: str, answers: list, model: str):
