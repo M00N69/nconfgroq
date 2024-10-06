@@ -18,6 +18,17 @@ def add_custom_css():
         .stTextInput input {
             font-size: 14px;
         }
+        .custom-question {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+        .custom-expander .stExpanderContent {
+            font-size: 14px;
+        }
+        .custom-expander .stExpander {
+            margin-bottom: 10px;
+        }
         </style>
         """, unsafe_allow_html=True)
 
@@ -34,7 +45,6 @@ def ask_groq_for_questions(prompt: str):
         f"L'utilisateur a décrit le problème suivant : {prompt}. "
         f"Génère des questions spécifiques pour analyser et comprendre plus en détail ce problème."
     )
-    # Appel à l'API Groq pour générer les questions
     response = groq_client.generate(
         prompt=request_prompt,
         model="llama-3.1-70b-versatile",  # Modèle utilisé par défaut
@@ -68,7 +78,7 @@ def main():
     st.title("Analyse de Cause Source - Sécurité des denrées alimentaires")
 
     # Explication pour l'utilisateur
-    with st.expander("Comment utiliser cette application ?", expanded=True):
+    with st.expander("Comment utiliser cette application ?", expanded=True, class_="custom-expander"):
         st.write("""
         1. Décrivez votre problématique en lien avec la sécurité des denrées alimentaires.
         2. L'application générera automatiquement des questions spécifiques pour vous aider à approfondir l'analyse.
@@ -81,21 +91,26 @@ def main():
     st.write("Présentez votre problématique, non-conformité ou situation en lien avec la sécurité des denrées alimentaires.")
     problem_description = st.text_area("Décrivez la situation ici...")
 
-    if problem_description:
-        # Step 1: Generate Dynamic Questions
-        if 'questions' not in st.session_state:
-            st.session_state.questions = ask_groq_for_questions(problem_description)
-            st.session_state.answers = []
+    # Bouton pour soumettre la description de la situation avant de générer des questions
+    if st.button("Soumettre la situation"):
+        if problem_description:
+            # Step 1: Generate Dynamic Questions
+            if 'questions' not in st.session_state:
+                st.session_state.questions = ask_groq_for_questions(problem_description)
+                st.session_state.answers = []
+        else:
+            st.warning("Veuillez décrire la situation avant de soumettre.")
 
-        # Display and gather responses to dynamically generated questions
+    # Si la situation a été soumise, afficher les questions
+    if 'questions' in st.session_state:
         st.write("Répondez aux questions ci-dessous pour affiner l'analyse :")
         for i, question in enumerate(st.session_state.questions):
-            answer = st.text_input(f"Question {i+1}: {question}", key=f"answer_{i}")
+            answer = st.text_input(f"Question {i+1}: {question}", key=f"answer_{i}", label_visibility="visible", label_class="custom-question")
             if answer and len(st.session_state.answers) == i:
                 st.session_state.answers.append(answer)
 
         # Step 2: Submit button
-        if st.button("Soumettre"):
+        if st.button("Soumettre l'analyse"):
             if len(st.session_state.answers) == len(st.session_state.questions):
                 # Step 3: Perform root cause analysis
                 analysis_response = ask_groq_for_analysis(problem_description, list(zip(st.session_state.questions, st.session_state.answers)))
