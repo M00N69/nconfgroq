@@ -72,7 +72,7 @@ def generate_response_with_groq(client, question, context_snippets):
                 {"role": "user", "content": question},
                 {"role": "system", "content": combined_context}
             ],
-            model="llama-3.1-70b-versatile"  # Adapt the model to your needs
+            model="llama3-groq-70b-8192-tool-use-preview"  # Adapt the model to your needs
         )
         return response.choices[0].message.content
     else:
