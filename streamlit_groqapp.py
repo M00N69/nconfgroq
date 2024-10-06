@@ -50,19 +50,27 @@ def login_page():
 # Define a function for generating responses using the detailed instruction
 def generate_response(user_input):
     # Detailed instructions for generating responses
-    system_instruction = """
-    reformuler chaque non-conformité en langue française puis en langue anglaise, en utilisant les instructions suivantes :
-    Référez-vous aux documents de la norme IFSv8 en priorité.
-    Assurez-vous que la reformulation soit factuelle, détaillée et justifie le choix de la notation. Pour ce faire, mentionnez la référence de la procédure, la zone ou l'équipement concerné, et précisez le risque produit tout en restant dans le contexte de l'exigence.
-    Évitez de formuler la reformulation sous forme de conseils ou de suggestions. Elle doit simplement décrire la non-conformité constatée.
-    La reformulation doit idéalement inclure les quatre aspects suivants :
-    L’exigence exemple: "La norme exige que ….." dasn ce cas bien s'assurer que la référence à l'exigenc de la norme est la bonne ens e référant aux documents de la normes IFSv8  ou exigence interne "Pour cela l’entreprise a prévu de ….". Il faut également ajouté des élément confirmons que dans l'ensemble l'exigence est remplie exemple : Les déchets sont correctement  gérés au niveau du site  ou Les sols sont conçus et adaptés aux process... 
-    La description de la défaillance : précisez les responsabilités, la méthode ou les informations documentées qui n'ont pas été prévues ou mises en œuvre, ou qui ne sont pas suffisamment efficaces pour atteindre le résultat prévu.
-    La preuve de la défaillance : fournissez des éléments concrets qui prouvent la non-conformité.
-    La conséquence/l'impact de cette défaillance dans le contexte de l'exigence : concluez en expliquant pourquoi le risque est limité.
-    Exemple de reformulation pour la langue française : La norme IFSv8 exige que les procédures de nettoyage soient documentées et mises en œuvre pour assurer la salubrité des équipements de production. Cependant, nous avons constaté que la procédure de nettoyage de la ligne de production n°1 n'était pas suivie correctement. En effet, les opérateurs ne respectent pas les fréquences de nettoyage prévues et n'utilisent pas les produits de nettoyage adéquats. Cette défaillance a été constatée lors de l'inspection visuelle des équipements et confirmée par les enregistrements de nettoyage. Cette non-conformité peut entraîner une contamination croisée des produits et un risque pour la sécurité alimentaire. Toutefois, le risque est limité car la ligne de production n°1 est dédiée à un seul type de produit et que des contrôles microbiologiques réguliers sont effectués.
-    English version : The IFSv8 standard requires that cleaning procedures be documented and implemented to ensure the cleanliness of production equipment. However, we observed that the cleaning procedure for production line #1 was not being followed correctly. Specifically, operators do not follow the scheduled cleaning frequencies and do not use the appropriate cleaning products. This failure was observed during a visual inspection of the equipment and confirmed by cleaning records. This non-conformity may result in cross-contamination of products and a risk to food safety. However, the risk is limited as production line #1 is dedicated to a single product type and regular microbiological controls are performed.
-    """
+system_instruction = """
+Reformulez chaque non-conformité en français puis en anglais, en suivant les consignes ci-dessous :
+
+1. **Référence à la norme ou aux exigences internes** : 
+   Faites référence aux documents de la norme IFSv8 ou à des exigences internes précises. Mentionnez l'exigence correspondante (ex : 'La norme IFSv8 exige que…' ou 'L'entreprise a prévu de…'), en précisant le respect général de l'exigence, si applicable (ex : 'Les déchets sont correctement gérés…').
+
+2. **Description de la défaillance** : 
+   Identifiez la responsabilité, la méthode ou l'information manquante ou inadéquate, qui empêche de répondre à l'exigence. Décrivez factuellement l'écart observé, sans formuler de conseils ou de suggestions.
+
+3. **Preuve de la défaillance** : 
+   Fournissez des éléments concrets prouvant la non-conformité, basés sur des observations ou des documents vérifiables (ex : enregistrements, contrôles visuels).
+
+4. **Conséquence/Impact de la défaillance** : 
+   Évaluez l'impact de cette non-conformité sur le produit ou le process, en lien avec le risque produit et le contexte de l'exigence (ex : risque pour la sécurité alimentaire), tout en soulignant les éléments qui atténuent ce risque.
+
+Exemple en français :
+La norme IFSv8 exige que les équipements soient régulièrement contrôlés pour garantir leur conformité sanitaire. Cependant, il a été observé que les enregistrements de maintenance préventive de la ligne de production n°3 ne sont pas à jour. En effet, plusieurs interventions prévues n'ont pas été réalisées dans les délais prescrits. Cette défaillance a été confirmée par la consultation des registres de maintenance. Elle peut entraîner un risque accru de panne ou de contamination, bien que ce risque soit limité par la mise en place de contrôles de qualité réguliers sur cette ligne.
+
+Exemple en anglais :
+The IFSv8 standard requires that equipment be regularly inspected to ensure sanitary compliance. However, it was observed that the preventive maintenance records for production line #3 are not up to date. Specifically, several scheduled interventions were not carried out within the required timeframe. This failure was confirmed through the review of maintenance logs. It may increase the risk of breakdowns or contamination, although this risk is mitigated by regular quality checks on this line.
+"""
     chat_completion = client.chat.completions.create(
         messages=[
             {"role": "user", "content": user_input},
