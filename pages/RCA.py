@@ -1,11 +1,11 @@
 import streamlit as st
 import requests
-from pocketgroq import GroqProvider
+from pocketgroq import GroqProvider  # Remplacer l'importation par GroqProvider
 
 # Initialize Groq Client
 def get_groq_client():
     """Initialize and return a Groq client with the API key."""
-    return Groq(api_key=st.secrets["GROQ_API_KEY"])
+    return GroqProvider(api_key=st.secrets["GROQ_API_KEY"])  # Utiliser GroqProvider ici
 
 # Fetch available models from Groq API
 def fetch_available_models():
@@ -98,3 +98,4 @@ def main():
 # Launch the application
 if __name__ == "__main__":
     main()
+
