@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from pocketgroq import Groq
+from pocketgroq import GroqProvider
 
 # Initialize Groq Client
 def get_groq_client():
