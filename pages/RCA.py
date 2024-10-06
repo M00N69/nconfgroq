@@ -36,9 +36,14 @@ def ask_groq_for_questions(prompt: str, model: str):
         max_tokens=500
     )
     
-    # On suppose que le modèle renvoie une liste de questions dans le texte de la réponse
-    questions = response.split('\n')  # Diviser la réponse par lignes pour obtenir les questions
-    return [question for question in questions if question]  # Filtrer les lignes vides
+    # Diviser la réponse par lignes pour obtenir les questions
+    questions = response.split('\n')
+    
+    # Filtrer et limiter les questions à celles qui contiennent un point d'interrogation
+    filtered_questions = [q.strip() for q in questions if '?' in q]
+    
+    # Limiter le nombre de questions à 5
+    return filtered_questions[:5]
 
 # Ask Groq for root cause analysis and recommendations
 def ask_groq_for_analysis(problem_description: str, answers: list, model: str):
