@@ -78,7 +78,7 @@ def main():
     st.title("Analyse de Cause Source - Sécurité des denrées alimentaires")
 
     # Explication pour l'utilisateur
-    with st.expander("Comment utiliser cette application ?", expanded=True, class_="custom-expander"):
+    with st.expander("Comment utiliser cette application ?", expanded=True):  # Suppression du paramètre class_
         st.write("""
         1. Décrivez votre problématique en lien avec la sécurité des denrées alimentaires.
         2. L'application générera automatiquement des questions spécifiques pour vous aider à approfondir l'analyse.
@@ -137,3 +137,4 @@ def main():
 # Launch the application
 if __name__ == "__main__":
     main()
+
