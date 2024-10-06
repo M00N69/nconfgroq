@@ -23,12 +23,6 @@ def add_custom_css():
             font-weight: bold;
             color: #333;
         }
-        .custom-expander .stExpanderContent {
-            font-size: 14px;
-        }
-        .custom-expander .stExpander {
-            margin-bottom: 10px;
-        }
         </style>
         """, unsafe_allow_html=True)
 
@@ -78,7 +72,7 @@ def main():
     st.title("Analyse de Cause Source - Sécurité des denrées alimentaires")
 
     # Explication pour l'utilisateur
-    with st.expander("Comment utiliser cette application ?", expanded=True):  # Suppression du paramètre class_
+    with st.expander("Comment utiliser cette application ?", expanded=True):
         st.write("""
         1. Décrivez votre problématique en lien avec la sécurité des denrées alimentaires.
         2. L'application générera automatiquement des questions spécifiques pour vous aider à approfondir l'analyse.
@@ -105,7 +99,7 @@ def main():
     if 'questions' in st.session_state:
         st.write("Répondez aux questions ci-dessous pour affiner l'analyse :")
         for i, question in enumerate(st.session_state.questions):
-            answer = st.text_input(f"Question {i+1}: {question}", key=f"answer_{i}", label_visibility="visible", label_class="custom-question")
+            answer = st.text_input(f"Question {i+1}: {question}", key=f"answer_{i}")
             if answer and len(st.session_state.answers) == i:
                 st.session_state.answers.append(answer)
 
