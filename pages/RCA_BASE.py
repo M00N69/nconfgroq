@@ -12,7 +12,7 @@ def add_custom_css():
             margin: 0 auto;
         }
         .stTextInput label {
-            font-size: 20px;
+            font-size: 28px;
             font-weight: bold;
         }
         .stTextInput input {
